@@ -1,0 +1,145 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Frontend lint, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install frontend dependencies
+        run: ./infra/ci/frontend.sh install
+      - name: Lint frontend
+        run: ./infra/ci/frontend.sh lint
+      - name: Test frontend
+        env:
+          CI: "true"
+        run: ./infra/ci/frontend.sh test
+      - name: Build frontend
+        env:
+          VITE_API_URL: /api/page-builder/v1
+          VITE_BASE_PATH: /page-builder/
+        run: ./infra/ci/frontend.sh build
+
+  backend:
+    name: Backend lint and coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: page_builder_test
+          POSTGRES_USER: page_builder
+          POSTGRES_PASSWORD: test-only-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U page_builder -d page_builder_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 12
+    env:
+      PB_ENVIRONMENT: test
+      PB_JWT_SECRET: test-only-secret-with-at-least-32-characters
+      PB_DATABASE_URL: postgresql+asyncpg://page_builder:test-only-password@127.0.0.1:5432/page_builder_test
+      PB_REDIS_URL: redis://127.0.0.1:6379/0
+      PB_OBJECT_STORAGE: local
+      PB_SCHEDULER_ENABLED: "false"
+      FEATURE_PAGE_BUILDER: "true"
+      FEATURE_SCHEDULER: "false"
+      COVERAGE_MIN: "80"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install backend dependencies
+        run: ./infra/ci/backend.sh install
+      - name: Lint backend
+        run: ./infra/ci/backend.sh lint
+      - name: Test backend with coverage
+        run: ./infra/ci/backend.sh test
+      - name: Upload coverage XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: backend/coverage.xml
+          if-no-files-found: warn
+
+  migrations:
+    name: Migration drift check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: page_builder_migrations
+          POSTGRES_USER: page_builder
+          POSTGRES_PASSWORD: test-only-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U page_builder -d page_builder_migrations"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      PB_ENVIRONMENT: test
+      PB_JWT_SECRET: test-only-secret-with-at-least-32-characters
+      PB_DATABASE_URL: postgresql+asyncpg://page_builder:test-only-password@127.0.0.1:5432/page_builder_migrations
+      PB_SCHEDULER_ENABLED: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install backend dependencies
+        run: ./infra/ci/backend.sh install
+      - name: Apply migrations and detect drift
+        run: ./infra/ci/backend.sh migration-check
+
+  configuration:
+    name: Compose and gateway configuration
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Compose rendering
+        run: docker compose --env-file .env.example config --quiet
+      - name: Validate rendered nginx policy
+        run: >-
+          docker run --rm
+          -e LEGACY_UPSTREAM_HOST=legacy.invalid
+          -e LEGACY_UPSTREAM_PORT=8080
+          -e PAGE_BUILDER_ROUTE_ENABLED=0
+          -v "$PWD/infra/nginx/page-builder.conf.template:/etc/nginx/templates/default.conf.template:ro"
+          nginx:alpine nginx -t
+      - name: Verify gateway route ownership and kill switch
+        run: bash ./infra/nginx/test-gateway.sh

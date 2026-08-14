@@ -1,0 +1,67 @@
+name: Browser E2E
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright and axe
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      FEATURE_PAGE_BUILDER: "true"
+      FEATURE_MEDIA_UPLOADS: "true"
+      E2E_FRONTEND_BASE_URL: http://127.0.0.1:15173
+      E2E_API_BASE_URL: http://127.0.0.1:18080
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build application images
+        run: docker compose --env-file .env.example build backend frontend
+      - name: Start dependencies
+        run: >-
+          docker compose --env-file .env.example up -d
+          postgres redis minio minio-init
+      - name: Start applications
+        run: >-
+          docker compose --env-file .env.example up -d
+          migrate backend scheduler worker frontend
+      - name: Wait for readiness
+        run: |
+          ./infra/ci/wait-for-url.sh http://127.0.0.1:18080/health/ready 180
+          ./infra/ci/wait-for-url.sh http://127.0.0.1:15173/ 180
+      - name: Install E2E dependencies
+        working-directory: tests/e2e
+        run: npm ci
+      - name: Install Chromium
+        working-directory: tests/e2e
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright and axe
+        working-directory: tests/e2e
+        run: npm test
+      - name: Capture service logs on failure
+        if: failure()
+        run: docker compose --env-file .env.example logs --no-color
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: tests/e2e/playwright-report
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Stop stack
+        if: always()
+        run: docker compose --env-file .env.example down --volumes
