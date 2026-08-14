@@ -75,7 +75,7 @@ jobs:
       COVERAGE_MIN: "80"
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Install backend dependencies
@@ -117,7 +117,7 @@ jobs:
       PB_SCHEDULER_ENABLED: "false"
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Install backend dependencies
