@@ -1,0 +1,53 @@
+name: Performance budgets
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      public_rps:
+        description: Public page requests per second
+        required: false
+        default: "500"
+      duration:
+        description: Test duration
+        required: false
+        default: "2m"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: performance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  public-budget:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      FEATURE_PAGE_BUILDER: "true"
+      FEATURE_MEDIA_UPLOADS: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start complete stack
+        run: docker compose --env-file .env.example up --build -d
+      - name: Wait for frontend
+        run: ./infra/ci/wait-for-url.sh http://127.0.0.1:15173/ 180
+      - name: Run public performance budget
+        run: >-
+          docker run --rm --network host
+          -e BASE_URL=http://127.0.0.1:15173
+          -e PUBLIC_PATH=/
+          -e PUBLIC_RPS=${{ inputs.public_rps || '50' }}
+          -e DURATION=${{ inputs.duration || '30s' }}
+          -e PREALLOCATED_VUS=100
+          -e MAX_VUS=500
+          -v "$PWD/infra/load/k6:/scripts:ro"
+          grafana/k6:latest run /scripts/public.js
+      - name: Capture logs on failure
+        if: failure()
+        run: docker compose --env-file .env.example logs --no-color
+      - name: Stop stack
+        if: always()
+        run: docker compose --env-file .env.example down --volumes

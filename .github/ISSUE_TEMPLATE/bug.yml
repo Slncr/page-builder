@@ -1,0 +1,48 @@
+name: Bug report
+description: Report a reproducible Page Builder defect
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Do not include credentials, personal data, or vulnerability details.
+        Follow SECURITY.md for security reports.
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Who is affected and what can they not do?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal steps, page/revision IDs if safe, and expected versus actual behavior.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+    validations:
+      required: true
+  - type: input
+    id: request-id
+    attributes:
+      label: Sanitized request ID and UTC time
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Additional evidence
+      description: Sanitized logs, screenshots, browser, flags, and environment.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety
+      options:
+        - label: I removed secrets and personal data.
+          required: true
+        - label: This is not a security vulnerability.
+          required: true

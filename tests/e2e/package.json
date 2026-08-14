@@ -1,0 +1,15 @@
+{
+  "name": "page-builder-e2e",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Black-box Playwright and axe checks for the Page Builder",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.12.1",
+    "@playwright/test": "1.62.1"
+  }
+}

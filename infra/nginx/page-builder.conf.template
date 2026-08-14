@@ -1,0 +1,97 @@
+# Legacy-first gateway policy. Render only the three ${...} placeholders;
+# preserve nginx variables such as $host and $request_id.
+map $http_upgrade $page_builder_connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+    listen 8080;
+    server_name _;
+    absolute_redirect off;
+    recursive_error_pages on;
+
+    # Docker's embedded DNS is resolved at request time. A missing legacy host
+    # therefore does not prevent nginx from starting.
+    resolver 127.0.0.11 ipv6=off valid=10s;
+    resolver_timeout 5s;
+
+    set $legacy_origin "http://${LEGACY_UPSTREAM_HOST}:${LEGACY_UPSTREAM_PORT}";
+    set $page_builder_route_enabled "${PAGE_BUILDER_ROUTE_ENABLED}";
+
+    # Only explicit namespaces may enter the new stack.
+    location ~ ^/api/page-builder/v1(?:/|$) {
+        error_page 418 = @legacy;
+        if ($page_builder_route_enabled != "1") { return 418; }
+
+        # External /api/page-builder/v1/* maps to backend /api/v1/*.
+        set $page_builder_api "http://backend:8000";
+        rewrite ^/api/page-builder/(.*)$ /api/$1 break;
+        client_max_body_size 32m;
+        proxy_pass $page_builder_api;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /api/page-builder;
+        proxy_set_header X-Request-ID $request_id;
+    }
+
+    location = /page-builder {
+        error_page 418 = @legacy;
+        if ($page_builder_route_enabled != "1") { return 418; }
+
+        return 308 /page-builder/;
+    }
+
+    location ^~ /page-builder/ {
+        error_page 418 = @legacy;
+        if ($page_builder_route_enabled != "1") { return 418; }
+
+        set $page_builder_ui "http://frontend:5173";
+        proxy_pass $page_builder_ui;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $page_builder_connection_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /page-builder;
+        proxy_set_header X-Request-ID $request_id;
+        proxy_read_timeout 1h;
+    }
+
+    # Legacy remains the default for every path not explicitly owned above.
+    location / {
+        proxy_pass $legacy_origin;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $page_builder_connection_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Request-ID $request_id;
+        proxy_intercept_errors on;
+        error_page 502 503 504 = @legacy_unavailable;
+    }
+
+    # A disabled builder route returns to legacy for the same request URI.
+    location @legacy {
+        proxy_pass $legacy_origin;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $page_builder_connection_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Request-ID $request_id;
+        proxy_intercept_errors on;
+        error_page 502 503 504 = @legacy_unavailable;
+    }
+
+    # Never fail over legacy traffic to the unproven page-builder stack.
+    location @legacy_unavailable {
+        default_type application/json;
+        return 503 '{"error":"legacy_upstream_unavailable"}';
+    }
+}

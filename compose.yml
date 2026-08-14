@@ -1,0 +1,261 @@
+name: ${COMPOSE_PROJECT_NAME:-page-builder}
+
+x-backend-service: &backend-service
+  build:
+    context: ./backend
+    dockerfile: Dockerfile
+  image: page-builder-backend:local
+  restart: unless-stopped
+  environment: &backend-environment
+    PB_ENVIRONMENT: ${PB_ENVIRONMENT:-local}
+    PB_DEFAULT_LOCALE: ${PB_DEFAULT_LOCALE:-ru}
+    PB_DATABASE_URL: ${PB_DATABASE_URL:-postgresql+asyncpg://page_builder:change-me-local-postgres@postgres:5432/page_builder}
+    PB_REDIS_URL: ${PB_REDIS_URL:-redis://redis:6379/0}
+    PB_OBJECT_STORAGE: ${PB_OBJECT_STORAGE:-minio}
+    PB_PUBLIC_ASSET_BASE_URL: ${PB_PUBLIC_ASSET_BASE_URL:-/api/v1/public/assets}
+    PB_MINIO_ENDPOINT: ${PB_MINIO_ENDPOINT:-minio:9000}
+    PB_MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-page-builder-local}
+    PB_MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-change-me-local-minio}
+    PB_MINIO_BUCKET: ${S3_BUCKET:-page-builder-media}
+    PB_MINIO_SECURE: ${PB_MINIO_SECURE:-false}
+    PB_JWT_SECRET: ${PB_JWT_SECRET:-change-me-local-app-secret-at-least-32-characters}
+    PB_CORS_ORIGINS: '${PB_CORS_ORIGINS:-["http://localhost:5173"]}'
+    PB_SCHEDULER_ENABLED: "false"
+    PB_LEGACY_FALLBACK_ENABLED: ${PB_LEGACY_FALLBACK_ENABLED:-false}
+    FEATURE_PAGE_BUILDER: ${FEATURE_PAGE_BUILDER:-false}
+    FEATURE_SCHEDULER: ${FEATURE_SCHEDULER:-false}
+    FEATURE_MEDIA_UPLOADS: ${FEATURE_MEDIA_UPLOADS:-false}
+    FEATURE_BATCH_PUBLISH: ${FEATURE_BATCH_PUBLISH:-false}
+    LEGACY_ADAPTER_MODE: ${LEGACY_ADAPTER_MODE:-disabled}
+    PUBLIC_READ_FAIL_CLOSED: ${PUBLIC_READ_FAIL_CLOSED:-true}
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+    minio-init:
+      condition: service_completed_successfully
+  networks:
+    - page-builder
+
+services:
+  migrate:
+    <<: *backend-service
+    restart: "no"
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+
+  gateway:
+    image: nginx:alpine
+    profiles: ["gateway"]
+    restart: unless-stopped
+    environment:
+      LEGACY_UPSTREAM_HOST: ${LEGACY_UPSTREAM_HOST:-legacy.invalid}
+      LEGACY_UPSTREAM_PORT: ${LEGACY_UPSTREAM_PORT:-80}
+      PAGE_BUILDER_ROUTE_ENABLED: ${PAGE_BUILDER_ROUTE_ENABLED:-0}
+      NGINX_ENVSUBST_FILTER: LEGACY_UPSTREAM_HOST|LEGACY_UPSTREAM_PORT|PAGE_BUILDER_ROUTE_ENABLED
+    volumes:
+      - ./infra/nginx/page-builder.conf.template:/etc/nginx/templates/default.conf.template:ro
+    ports:
+      - "${GATEWAY_PORT:-18081}:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+    networks:
+      - page-builder
+      - legacy-origin
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: build
+      args:
+        VITE_API_URL: ${VITE_API_URL:-/api/v1}
+        VITE_BASE_PATH: ${VITE_BASE_PATH:-/}
+        VITE_DEFAULT_LOCALE: ${VITE_DEFAULT_LOCALE:-ru}
+    image: page-builder-frontend:local
+    restart: unless-stopped
+    command: ["/bin/sh", "-c", "${FRONTEND_COMMAND:-npm run dev -- --host 0.0.0.0 --port 5173}"]
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-/api/v1}
+      VITE_BASE_PATH: ${VITE_BASE_PATH:-/}
+      VITE_DEFAULT_LOCALE: ${VITE_DEFAULT_LOCALE:-ru}
+      VITE_DEV_API_TARGET: ${VITE_DEV_API_TARGET:-http://backend:8000}
+      VITE_DEMO_MODE: ${VITE_DEMO_MODE:-false}
+      FEATURE_PAGE_BUILDER: ${FEATURE_PAGE_BUILDER:-false}
+    ports:
+      - "${FRONTEND_PORT:-15173}:5173"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:5173' + (process.env.VITE_BASE_PATH || '/')).then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks:
+      - page-builder
+
+  backend:
+    <<: *backend-service
+    command: ["/bin/sh", "-c", "${BACKEND_COMMAND:-uvicorn app.main:app --host 0.0.0.0 --port 8000}"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "${BACKEND_PORT:-18080}:8000"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000${BACKEND_HEALTHCHECK_PATH:-/health/ready}', timeout=3)\"",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  scheduler:
+    <<: *backend-service
+    command: ["/bin/sh", "-c", "${SCHEDULER_COMMAND:-python -m app.cli.scheduler}"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      <<: *backend-environment
+      PB_SCHEDULER_ENABLED: "true"
+      PB_WORKER_ENABLED: "false"
+    healthcheck:
+      disable: true
+
+  worker:
+    <<: *backend-service
+    command: ["/bin/sh", "-c", "${WORKER_COMMAND:-python -m app.cli.worker}"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      <<: *backend-environment
+      PB_SCHEDULER_ENABLED: "false"
+      PB_WORKER_ENABLED: "true"
+    healthcheck:
+      disable: true
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-page_builder}
+      POSTGRES_USER: ${POSTGRES_USER:-page_builder}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me-local-postgres}
+    ports:
+      - "${POSTGRES_PORT:-25432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - page-builder
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-26379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks:
+      - page-builder
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-page-builder-local}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-change-me-local-minio}
+    ports:
+      - "${MINIO_API_PORT:-29000}:9000"
+      - "${MINIO_CONSOLE_PORT:-29001}:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent http://127.0.0.1:9000/minio/health/live >/dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - page-builder
+
+  minio-init:
+    image: minio/mc:latest
+    restart: "no"
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-page-builder-local}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-change-me-local-minio}
+      S3_BUCKET: ${S3_BUCKET:-page-builder-media}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        mc alias set local http://minio:9000 "$$MINIO_ROOT_USER" "$$MINIO_ROOT_PASSWORD"
+        && mc mb --ignore-existing "local/$$S3_BUCKET"
+        && mc anonymous set none "local/$$S3_BUCKET"
+    networks:
+      - page-builder
+
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:
+
+networks:
+  page-builder:
+    name: ${COMPOSE_PROJECT_NAME:-page-builder}
+    driver: bridge
+  legacy-origin:
+    name: ${LEGACY_DOCKER_NETWORK:-site_default}
+    external: true

@@ -1,0 +1,51 @@
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.venv/
+venv/
+
+# JavaScript / TypeScript
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# Test and load artifacts
+playwright-report/
+test-results/
+blob-report/
+coverage/
+infra/load/results/
+
+# IDE and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Logs and temporary files
+*.log
+tmp/
+.cache/
+
+# Local backup output
+backups/
