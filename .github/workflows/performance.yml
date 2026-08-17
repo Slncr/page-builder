@@ -29,7 +29,7 @@ jobs:
       FEATURE_PAGE_BUILDER: "true"
       FEATURE_MEDIA_UPLOADS: "true"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Start complete stack
         run: docker compose --env-file .env.example up --build -d
       - name: Wait for frontend
