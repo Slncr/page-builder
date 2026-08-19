@@ -1,5 +1,6 @@
 const SAFE_NAVIGATION_URL = /^(https?:|mailto:|tel:|\/|#)/i;
 const SAFE_MEDIA_URL = /^(https?:|\/)/i;
+const ADMIN_MOUNTS = Object.freeze(['/page-builder', '/_page-builder']);
 
 function trimTrailingSlash(value) {
   return String(value || '').replace(/\/+$/, '');
@@ -8,6 +9,24 @@ function trimTrailingSlash(value) {
 function normalizeBasePath(value = '/') {
   const path = `/${String(value || '/').trim().replace(/^\/+|\/+$/g, '')}`;
   return path === '/' ? path : `${path}/`;
+}
+
+export function publicSiteUrl(value) {
+  const candidate = String(value || '').trim();
+  if (!candidate.startsWith('/') || candidate.startsWith('//')) {
+    return candidate;
+  }
+  for (const mount of ADMIN_MOUNTS) {
+    if (candidate === mount || candidate === `${mount}/`) return '/';
+    if (
+      candidate.startsWith(`${mount}/`)
+      || candidate.startsWith(`${mount}?`)
+      || candidate.startsWith(`${mount}#`)
+    ) {
+      return candidate.slice(mount.length) || '/';
+    }
+  }
+  return candidate;
 }
 
 function withBasePath(value, basePath) {
@@ -41,6 +60,7 @@ export function createIntegrationAdapters({
   apiBaseUrl = '/api/v1',
   basePath = '/',
   fetchImpl = (...args) => fetch(...args),
+  pageFeedResolver = null,
 } = {}) {
   const apiRoot = trimTrailingSlash(apiBaseUrl) || '/api/v1';
 
@@ -53,7 +73,8 @@ export function createIntegrationAdapters({
 
     linkResolver(value, context = {}) {
       const fallback = context.fallback || '#';
-      return withBasePath(safeNavigationUrl(value, fallback), basePath);
+      const href = publicSiteUrl(safeNavigationUrl(value, fallback));
+      return publicSiteUrl(withBasePath(href, basePath));
     },
 
     async formSubmitter(submission, context = {}) {
@@ -77,6 +98,13 @@ export function createIntegrationAdapters({
         );
       }
       return payload || {};
+    },
+
+    async pageFeedResolver(query = {}) {
+      if (typeof pageFeedResolver === 'function') {
+        return pageFeedResolver(query);
+      }
+      return { items: query.items || [] };
     },
 
     integrationSlots: Object.freeze({}),

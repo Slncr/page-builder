@@ -33,6 +33,12 @@ def test_registry_contains_every_mandatory_non_mis_block_and_validates_props() -
         "faq",
         "breadcrumbs",
         "pageList",
+        "navbar",
+        "hero",
+        "stats",
+        "testimonials",
+        "pricing",
+        "footer",
     }
     assert set(registry.block_types) == expected
     assert "misEntity" not in registry.block_types

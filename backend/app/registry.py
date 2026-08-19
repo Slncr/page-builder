@@ -115,6 +115,24 @@ DEFINITIONS = (
         _schema(
             {
                 "anchorId": {"type": "string"},
+                "styleVariant": {
+                    "enum": [
+                        "default",
+                        "editorial-masthead",
+                        "news-brief",
+                        "news-feature",
+                        "news-case",
+                        "news-celebration",
+                        "news-program",
+                        "article-magazine",
+                        "article-checklist",
+                        "article-kids",
+                        "article-triage",
+                        "article-minimal",
+                        "editorial-panel",
+                        "editorial-related",
+                    ]
+                },
                 "backgroundType": {
                     "enum": ["none", "color", "image", "gradient"],
                 },
@@ -144,6 +162,14 @@ DEFINITIONS = (
         _schema(
             {
                 "layout": {"oneOf": [{"type": "integer"}, {"type": "string"}]},
+                "ratio": {
+                    "enum": [
+                        "equal",
+                        "content-aside",
+                        "aside-content",
+                        "cover-copy",
+                    ]
+                },
                 "stackOnMobile": {"type": "boolean"},
             },
             ["layout"],
@@ -182,7 +208,13 @@ DEFINITIONS = (
         "Форматированный текст",
         "typography",
         "Безопасный форматированный текст",
-        _schema({"html": {"type": "string"}}, ["html"]),
+        _schema(
+            {
+                "html": {"type": "string"},
+                "variant": {"enum": ["default", "lead", "eyebrow"]},
+            },
+            ["html"],
+        ),
         html_fields=("html",),
     ),
     BlockDefinition(
@@ -201,10 +233,10 @@ DEFINITIONS = (
         _schema(
             {
                 "assetId": {"type": "string", "format": "uuid"},
+                "usePageCover": {"type": "boolean"},
                 "alt": {"type": "string"},
                 "decorative": {"type": "boolean"},
-            },
-            ["assetId"],
+            }
         ),
     ),
     BlockDefinition(
@@ -386,6 +418,48 @@ DEFINITIONS = (
             },
             ["sourceType"],
         ),
+    ),
+    BlockDefinition(
+        "hero",
+        "Первый экран",
+        "content",
+        "Главный экран с заголовком и действиями",
+        _schema({"title": {"type": "string", "minLength": 1}}, ["title"]),
+    ),
+    BlockDefinition(
+        "stats",
+        "Показатели",
+        "content",
+        "Сетка числовых показателей",
+        _schema({"items": {"type": "array", "minItems": 1}}, ["items"]),
+    ),
+    BlockDefinition(
+        "testimonials",
+        "Отзывы",
+        "content",
+        "Сетка отзывов клиентов",
+        _schema({"items": {"type": "array", "minItems": 1}}, ["items"]),
+    ),
+    BlockDefinition(
+        "pricing",
+        "Тарифы",
+        "content",
+        "Сетка тарифных планов",
+        _schema({"plans": {"type": "array", "minItems": 1}}, ["plans"]),
+    ),
+    BlockDefinition(
+        "navbar",
+        "Навигация",
+        "special",
+        "Верхняя навигация страницы",
+        _schema({"brand": {"type": "string", "minLength": 1}}, ["brand"]),
+    ),
+    BlockDefinition(
+        "footer",
+        "Подвал",
+        "special",
+        "Нижний колонтитул страницы",
+        _schema({"brand": {"type": "string", "minLength": 1}}, ["brand"]),
     ),
 )
 

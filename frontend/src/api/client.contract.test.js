@@ -30,13 +30,13 @@ describe('remote API backend contract', () => {
       user: { id: 'user-id', email: 'editor@example.com', displayName: 'Editor' },
     }));
     const api = await remoteApi();
-    const user = await api.session.login({ email: 'editor@example.com', password: 'password' });
+    const user = await api.session.login({ login: 'editor', password: 'password' });
 
     expect(user.id).toBe('user-id');
     expect(fetch).toHaveBeenCalledWith('/api/v1/auth/login', expect.objectContaining({
       method: 'POST',
       credentials: 'include',
-      body: JSON.stringify({ email: 'editor@example.com', password: 'password' }),
+      body: JSON.stringify({ login: 'editor', password: 'password' }),
     }));
   });
 
@@ -229,7 +229,7 @@ describe('remote API backend contract', () => {
     });
 
     expect(fetch.mock.calls[0][0]).toBe(
-      '/api/v1/public/pages?contentType=news&sectionKey=news&limit=6',
+      '/api/v1/public/pages?contentType=news&section=news&pageSize=6',
     );
     expect(feed.items[0]).toMatchObject({
       contentType: 'news',
@@ -370,5 +370,14 @@ describe('remote API backend contract', () => {
 
     expect(second).toEqual(first);
     expect(fetch.mock.calls[1][1].headers['If-None-Match']).toBe('"rev-1"');
+  });
+
+  it('maps public feed query names to the backend contract', async () => {
+    fetch.mockResolvedValueOnce(jsonResponse({ items: [], total: 0, page: 1, pageSize: 6 }));
+    const api = await remoteApi();
+
+    await api.pages.listPublic({ contentType: 'news', sectionKey: 'press', limit: 6 });
+
+    expect(fetch.mock.calls[0][0]).toBe('/api/v1/public/pages?contentType=news&section=press&pageSize=6');
   });
 });

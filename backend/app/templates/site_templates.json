@@ -1,0 +1,4169 @@
+[
+  {
+    "slug": "news-brief",
+    "name": "Оперативная новость",
+    "description": "Компактная новость с акцентной плашкой: факт, изменение режима и контакты.",
+    "category": "news",
+    "contentType": "news",
+    "sectionKey": "news",
+    "routePath": "",
+    "document": {
+      "schemaVersion": "1.0",
+      "pageMeta": {
+        "title": null,
+        "seoTitle": null,
+        "metaDescription": null,
+        "canonical": null,
+        "robots": "index,follow",
+        "ogTitle": null,
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "sitemapPriority": 0.5,
+        "changeFrequency": "monthly"
+      },
+      "layout": {
+        "shell": "about",
+        "showPageTitle": false,
+        "breadcrumbs": "auto"
+      },
+      "locale": "ru",
+      "blocks": [
+        {
+          "id": "brief-head",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "news-brief",
+            "backgroundType": "color",
+            "backgroundColor": "#fff7ed",
+            "foreground": "#172033",
+            "paddingTop": 44,
+            "paddingBottom": 44,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "brief-head-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "brief-meta",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p><strong>НОВОСТИ · 18 АВГУСТА 2026</strong></p>",
+                    "variant": "eyebrow",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "brief-h1",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Филиал продолжает работу: важное для пациентов",
+                    "level": "h1",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "brief-lead",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p><strong>Коротко:</strong> клиника принимает в обычном режиме, но временно изменён вход для пациентов.</p>",
+                    "variant": "lead",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "brief-body",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 16,
+            "paddingBottom": 24,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "brief-body-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "brief-copy",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p>Сразу сообщите, что произошло, какой филиал затронут и по какому адресу. Первый абзац отвечает на вопрос «что случилось» без рекламного вступления.</p><p>Дальше объясните, как клиника работает сейчас: где временный вход, переносится ли запись, сколько займут работы. Если есть неудобства — извинитесь и поблагодарите за понимание.</p><p>Закончите конкретным действием: по вопросам записи и посещения клиники звоните по телефону 8 (863) 309-05-06.</p>",
+                    "variant": "default",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "brief-divider",
+                  "type": "divider",
+                  "version": "1.0",
+                  "props": {
+                    "style": "solid",
+                    "thickness": 1,
+                    "color": "#fed7aa",
+                    "margin": 20
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "brief-cta",
+                  "type": "cta",
+                  "version": "1.0",
+                  "props": {
+                    "title": "Нужна помощь с записью?",
+                    "text": "Администратор уточнит маршрут и время приёма.",
+                    "buttons": [
+                      {
+                        "label": "8 (863) 309-05-06",
+                        "url": "tel:+78633090506",
+                        "variant": "primary"
+                      },
+                      {
+                        "label": "Записаться на приём",
+                        "url": "/doctors",
+                        "variant": "secondary"
+                      }
+                    ],
+                    "background": "#ea580c",
+                    "layout": "split"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        }
+      ],
+      "assetsRefs": [],
+      "settings": {}
+    }
+  },
+  {
+    "slug": "news-feature",
+    "name": "Запуск услуги",
+    "description": "Редакционная обложка в две колонки, карточка с ключевыми фактами и подробности запуска.",
+    "category": "news",
+    "contentType": "news",
+    "sectionKey": "news",
+    "routePath": "",
+    "document": {
+      "schemaVersion": "1.0",
+      "pageMeta": {
+        "title": null,
+        "seoTitle": null,
+        "metaDescription": null,
+        "canonical": null,
+        "robots": "index,follow",
+        "ogTitle": null,
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "sitemapPriority": 0.5,
+        "changeFrequency": "monthly"
+      },
+      "layout": {
+        "shell": "about",
+        "showPageTitle": false,
+        "breadcrumbs": "auto"
+      },
+      "locale": "ru",
+      "blocks": [
+        {
+          "id": "feature-head",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "news-feature",
+            "backgroundType": "color",
+            "backgroundColor": "#ecfeff",
+            "foreground": "#172033",
+            "paddingTop": 48,
+            "paddingBottom": 48,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "feature-head-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "feature-head-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "content-aside",
+                    "gap": "large",
+                    "alignItems": "center",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "feature-head-copy",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "feature-meta",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p><strong>НОВАЯ УСЛУГА · 18 АВГУСТА 2026</strong></p>",
+                            "variant": "eyebrow",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "feature-h1",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "В клинике открылся новый кабинет",
+                            "level": "h1",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "feature-lead",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Теперь пройти консультацию и процедуру можно всей семьёй в филиале рядом с домом.</p>",
+                            "variant": "lead",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "feature-head-cover",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "feature-cover",
+                          "type": "image",
+                          "version": "1.0",
+                          "props": {
+                            "usePageCover": true,
+                            "alt": "",
+                            "decorative": true,
+                            "caption": "",
+                            "link": "",
+                            "width": "100%",
+                            "align": "left",
+                            "borderRadius": 24,
+                            "lazyLoad": false,
+                            "focalPoint": "50% 50%",
+                            "fit": "cover",
+                            "ratio": "4/3"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "feature-body",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-panel",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 36,
+            "paddingBottom": 36,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "feature-body-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "feature-body-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "content-aside",
+                    "gap": "large",
+                    "alignItems": "stretch",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "feature-main",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "feature-why",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Зачем открыли кабинет",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "feature-copy",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Объясните медицинскую задачу: какую проблему закрывает услуга, для кого она особенно актуальна и почему пациентам раньше приходилось ехать в другой район.</p><p>Опишите процедуру простыми словами: как проходит, нужна ли подготовка, сколько визитов и какие возрастные ограничения.</p><p>Завершите практической информацией: адрес филиала, график и способ записи.</p>",
+                            "variant": "default",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "feature-facts",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "feature-card",
+                          "type": "card",
+                          "version": "1.0",
+                          "props": {
+                            "imageAlt": "",
+                            "title": "Коротко об услуге",
+                            "text": "<p><strong>Для кого:</strong> взрослые и дети</p><p><strong>Где:</strong> Евродон-Вересаева</p><p><strong>Запись:</strong> ежедневно</p>",
+                            "link": "",
+                            "button": "",
+                            "elevated": false
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "feature-cta-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 16,
+            "paddingBottom": 40,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "feature-cta-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "feature-cta",
+                  "type": "cta",
+                  "version": "1.0",
+                  "props": {
+                    "title": "Записаться на новую услугу",
+                    "text": "Уточним подготовку и подберём удобное время.",
+                    "buttons": [
+                      {
+                        "label": "8 (863) 309-05-06",
+                        "url": "tel:+78633090506",
+                        "variant": "primary"
+                      },
+                      {
+                        "label": "Записаться на приём",
+                        "url": "/doctors",
+                        "variant": "secondary"
+                      }
+                    ],
+                    "background": "#0284c7",
+                    "layout": "split"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "feature-related-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-related",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 32,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "feature-related-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "feature-related-heading",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Другие новости",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "feature-related",
+                  "type": "pageList",
+                  "version": "1.0",
+                  "props": {
+                    "sourceType": "manual",
+                    "source": "",
+                    "limit": 3,
+                    "sort": "newest",
+                    "cardTemplate": "image",
+                    "items": [
+                      {
+                        "title": "Новость клиники",
+                        "description": "Краткое описание связанного материала.",
+                        "href": "/about/news"
+                      },
+                      {
+                        "title": "Важное объявление",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/news"
+                      },
+                      {
+                        "title": "Событие ЕвроДон",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/news"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        }
+      ],
+      "assetsRefs": [],
+      "settings": {}
+    }
+  },
+  {
+    "slug": "news-case",
+    "name": "История пациента",
+    "description": "Тёмная журнальная обложка, клиническая история и наглядный маршрут лечения.",
+    "category": "news",
+    "contentType": "news",
+    "sectionKey": "news",
+    "routePath": "",
+    "document": {
+      "schemaVersion": "1.0",
+      "pageMeta": {
+        "title": null,
+        "seoTitle": null,
+        "metaDescription": null,
+        "canonical": null,
+        "robots": "index,follow",
+        "ogTitle": null,
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "sitemapPriority": 0.5,
+        "changeFrequency": "monthly"
+      },
+      "layout": {
+        "shell": "about",
+        "showPageTitle": false,
+        "breadcrumbs": "auto"
+      },
+      "locale": "ru",
+      "blocks": [
+        {
+          "id": "case-head",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "news-case",
+            "backgroundType": "color",
+            "backgroundColor": "#0f172a",
+            "foreground": "#ffffff",
+            "paddingTop": 52,
+            "paddingBottom": 52,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "case-head-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "case-head-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "cover-copy",
+                    "gap": "large",
+                    "alignItems": "center",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "case-cover-wrap",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "case-cover",
+                          "type": "image",
+                          "version": "1.0",
+                          "props": {
+                            "usePageCover": true,
+                            "alt": "",
+                            "decorative": true,
+                            "caption": "",
+                            "link": "",
+                            "width": "100%",
+                            "align": "left",
+                            "borderRadius": 24,
+                            "lazyLoad": false,
+                            "focalPoint": "50% 50%",
+                            "fit": "cover",
+                            "ratio": "4/3"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "case-head-copy",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "case-meta",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p><strong>ИСТОРИЯ ПАЦИЕНТА · ТРАВМАТОЛОГИЯ</strong></p>",
+                            "variant": "eyebrow",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "case-h1",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Как врач увидел то, что другие пропустили",
+                            "level": "h1",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "case-lead",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Пациентка пришла с усиливающимся отёком после перелома. Повторное обследование полностью изменило план лечения.</p>",
+                            "variant": "lead",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "case-story",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 36,
+            "paddingBottom": 20,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "case-story-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "case-start",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "С чего всё началось",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "case-copy",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p>Опишите жалобы, предыдущую помощь и причину повторного обращения. Обязательно назовите врача, должность и филиал — это центральный герой материала.</p><p>Расскажите, что показало обследование и чем было опасно продолжать прежнее лечение. Медицинский термин сразу объясните простыми словами.</p>",
+                    "variant": "default",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "case-quote",
+                  "type": "quote",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Новые симптомы после травмы нельзя игнорировать: усиление боли, отёк или онемение — повод для повторного осмотра.",
+                    "author": "Имя Фамилия, травматолог-ортопед",
+                    "sourceUrl": "",
+                    "layout": "large"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "case-steps",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-panel",
+            "backgroundType": "color",
+            "backgroundColor": "#f1f5f9",
+            "foreground": "#172033",
+            "paddingTop": 36,
+            "paddingBottom": 36,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "case-steps-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "case-steps-h",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Маршрут лечения",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "case-features",
+                  "type": "featureList",
+                  "version": "1.0",
+                  "props": {
+                    "iconStyle": "number",
+                    "columns": 3,
+                    "items": [
+                      {
+                        "title": "Повторная диагностика",
+                        "text": "Осмотр и исследование показали истинную причину.",
+                        "icon": "1"
+                      },
+                      {
+                        "title": "Новый план",
+                        "text": "Врач изменил фиксацию и подобрал терапию.",
+                        "icon": "2"
+                      },
+                      {
+                        "title": "Восстановление",
+                        "text": "ЛФК и контроль постепенно вернули функцию.",
+                        "icon": "3"
+                      }
+                    ],
+                    "title": ""
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "case-cta-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 16,
+            "paddingBottom": 40,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "case-cta-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "case-cta",
+                  "type": "cta",
+                  "version": "1.0",
+                  "props": {
+                    "title": "Нужна консультация после травмы?",
+                    "text": "Профильный врач оценит состояние и назначит диагностику.",
+                    "buttons": [
+                      {
+                        "label": "8 (863) 309-05-06",
+                        "url": "tel:+78633090506",
+                        "variant": "primary"
+                      },
+                      {
+                        "label": "Записаться на приём",
+                        "url": "/doctors",
+                        "variant": "secondary"
+                      }
+                    ],
+                    "background": "#1d4ed8",
+                    "layout": "split"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "case-related-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-related",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 32,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "case-related-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "case-related-heading",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Другие новости",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "case-related",
+                  "type": "pageList",
+                  "version": "1.0",
+                  "props": {
+                    "sourceType": "manual",
+                    "source": "",
+                    "limit": 3,
+                    "sort": "newest",
+                    "cardTemplate": "image",
+                    "items": [
+                      {
+                        "title": "Новость клиники",
+                        "description": "Краткое описание связанного материала.",
+                        "href": "/about/news"
+                      },
+                      {
+                        "title": "Важное объявление",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/news"
+                      },
+                      {
+                        "title": "Событие ЕвроДон",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/news"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        }
+      ],
+      "assetsRefs": [],
+      "settings": {}
+    }
+  },
+  {
+    "slug": "news-celebration",
+    "name": "Награда и событие",
+    "description": "Праздничная центрированная обложка, крупные показатели и цитата команды.",
+    "category": "news",
+    "contentType": "news",
+    "sectionKey": "news",
+    "routePath": "",
+    "document": {
+      "schemaVersion": "1.0",
+      "pageMeta": {
+        "title": null,
+        "seoTitle": null,
+        "metaDescription": null,
+        "canonical": null,
+        "robots": "index,follow",
+        "ogTitle": null,
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "sitemapPriority": 0.5,
+        "changeFrequency": "monthly"
+      },
+      "layout": {
+        "shell": "about",
+        "showPageTitle": false,
+        "breadcrumbs": "auto"
+      },
+      "locale": "ru",
+      "blocks": [
+        {
+          "id": "award-head",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "news-celebration",
+            "backgroundType": "gradient",
+            "backgroundColor": "linear-gradient(135deg, #3730a3, #6366f1 55%, #0ea5e9)",
+            "foreground": "#ffffff",
+            "paddingTop": 64,
+            "paddingBottom": 64,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "award-head-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "award-meta",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p><strong>НАГРАДА · ВЫБОР ПАЦИЕНТОВ</strong></p>",
+                    "variant": "eyebrow",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "award-h1",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Пациенты выбрали ЕвроДон",
+                    "level": "h1",
+                    "align": "center"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "award-lead",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p>Клиника стала победителем независимого рейтинга в номинации «Медицинские центры».</p>",
+                    "variant": "lead",
+                    "align": "center"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "award-stats",
+                  "type": "stats",
+                  "version": "1.0",
+                  "props": {
+                    "items": [
+                      {
+                        "value": "22 000+",
+                        "label": "номинантов рейтинга"
+                      },
+                      {
+                        "value": "7",
+                        "label": "стран-участниц"
+                      },
+                      {
+                        "value": "2026",
+                        "label": "год награды"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "award-body",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 36,
+            "paddingBottom": 24,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "award-body-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "award-copy",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p>Первый абзац — точный факт: название премии, номинация и кто формирует рейтинг. Не называйте себя «лучшими», если этого нет в формулировке организатора.</p><p>Дальше дайте масштаб: сколько участников, городов или стран. Объясните, что пациенты чаще всего отмечали в отзывах — врачей, сервис, филиалы, лабораторию и удобство записи.</p>",
+                    "variant": "default",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "award-quote",
+                  "type": "quote",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Спасибо пациентам за доверие, а команде — за ежедневную работу, из которой складывается это признание.",
+                    "author": "Команда клиники ЕвроДон",
+                    "sourceUrl": "",
+                    "layout": "large"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "award-cta",
+                  "type": "cta",
+                  "version": "1.0",
+                  "props": {
+                    "title": "Продолжаем работать для вас",
+                    "text": "Записаться к врачу можно онлайн или по телефону.",
+                    "buttons": [
+                      {
+                        "label": "8 (863) 309-05-06",
+                        "url": "tel:+78633090506",
+                        "variant": "primary"
+                      },
+                      {
+                        "label": "Записаться на приём",
+                        "url": "/doctors",
+                        "variant": "secondary"
+                      }
+                    ],
+                    "background": "#4f46e5",
+                    "layout": "center"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "award-related-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-related",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 32,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "award-related-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "award-related-heading",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Другие новости",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "award-related",
+                  "type": "pageList",
+                  "version": "1.0",
+                  "props": {
+                    "sourceType": "manual",
+                    "source": "",
+                    "limit": 3,
+                    "sort": "newest",
+                    "cardTemplate": "image",
+                    "items": [
+                      {
+                        "title": "Новость клиники",
+                        "description": "Краткое описание связанного материала.",
+                        "href": "/about/news"
+                      },
+                      {
+                        "title": "Важное объявление",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/news"
+                      },
+                      {
+                        "title": "Событие ЕвроДон",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/news"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        }
+      ],
+      "assetsRefs": [],
+      "settings": {}
+    }
+  },
+  {
+    "slug": "news-program",
+    "name": "Программа или чекап",
+    "description": "Зелёная продуктовая обложка, состав программы, кому подходит и заметная запись.",
+    "category": "news",
+    "contentType": "news",
+    "sectionKey": "news",
+    "routePath": "",
+    "document": {
+      "schemaVersion": "1.0",
+      "pageMeta": {
+        "title": null,
+        "seoTitle": null,
+        "metaDescription": null,
+        "canonical": null,
+        "robots": "index,follow",
+        "ogTitle": null,
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "sitemapPriority": 0.5,
+        "changeFrequency": "monthly"
+      },
+      "layout": {
+        "shell": "about",
+        "showPageTitle": false,
+        "breadcrumbs": "auto"
+      },
+      "locale": "ru",
+      "blocks": [
+        {
+          "id": "program-head",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "news-program",
+            "backgroundType": "color",
+            "backgroundColor": "#ecfdf5",
+            "foreground": "#172033",
+            "paddingTop": 52,
+            "paddingBottom": 52,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "program-head-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "program-head-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "content-aside",
+                    "gap": "large",
+                    "alignItems": "center",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "program-head-copy",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "program-meta",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p><strong>ПРОГРАММА ЗДОРОВЬЯ · СНОВА ДОСТУПНА</strong></p>",
+                            "variant": "eyebrow",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "program-h1",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Комплексное обследование за один маршрут",
+                            "level": "h1",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "program-lead",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>По просьбе пациентов мы вернули программу, которая объединяет консультации, анализы и диагностику.</p>",
+                            "variant": "lead",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "program-button",
+                          "type": "button",
+                          "version": "1.0",
+                          "props": {
+                            "label": "Посмотреть программу",
+                            "url": "/services/directions",
+                            "target": "_self",
+                            "variant": "primary",
+                            "size": "large",
+                            "icon": "→",
+                            "fullWidth": false
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "program-cover-wrap",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "program-cover",
+                          "type": "image",
+                          "version": "1.0",
+                          "props": {
+                            "usePageCover": true,
+                            "alt": "",
+                            "decorative": true,
+                            "caption": "",
+                            "link": "",
+                            "width": "100%",
+                            "align": "left",
+                            "borderRadius": 24,
+                            "lazyLoad": false,
+                            "focalPoint": "50% 50%",
+                            "fit": "cover",
+                            "ratio": "1/1"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "program-details",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-panel",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 36,
+            "paddingBottom": 36,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "program-details-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "program-details-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "content-aside",
+                    "gap": "large",
+                    "alignItems": "stretch",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "program-description",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "program-for",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Кому подходит",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "program-copy",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Укажите возраст, основные задачи и ситуации, когда программа особенно полезна. Объясните, сколько визитов занимает маршрут и как пациент получает результаты.</p><p>Не дублируйте полный прайс — оставьте ссылку на страницу программы.</p>",
+                            "variant": "default",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "program-includes-wrap",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "program-includes-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Что входит",
+                            "level": "h3",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "program-includes",
+                          "type": "list",
+                          "version": "1.0",
+                          "props": {
+                            "style": "checks",
+                            "items": [
+                              {
+                                "text": "Консультация профильного врача"
+                              },
+                              {
+                                "text": "Лабораторные исследования"
+                              },
+                              {
+                                "text": "Инструментальная диагностика"
+                              },
+                              {
+                                "text": "Итоговое заключение"
+                              }
+                            ]
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "program-cta-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 16,
+            "paddingBottom": 40,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "program-cta-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "program-cta",
+                  "type": "cta",
+                  "version": "1.0",
+                  "props": {
+                    "title": "Подобрать программу",
+                    "text": "Администратор уточнит цель и предложит подходящий пакет.",
+                    "buttons": [
+                      {
+                        "label": "8 (863) 309-05-06",
+                        "url": "tel:+78633090506",
+                        "variant": "primary"
+                      },
+                      {
+                        "label": "Записаться на приём",
+                        "url": "/doctors",
+                        "variant": "secondary"
+                      }
+                    ],
+                    "background": "#059669",
+                    "layout": "split"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "program-related-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-related",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 32,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "program-related-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "program-related-heading",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Другие новости",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "program-related",
+                  "type": "pageList",
+                  "version": "1.0",
+                  "props": {
+                    "sourceType": "manual",
+                    "source": "",
+                    "limit": 3,
+                    "sort": "newest",
+                    "cardTemplate": "image",
+                    "items": [
+                      {
+                        "title": "Новость клиники",
+                        "description": "Краткое описание связанного материала.",
+                        "href": "/about/news"
+                      },
+                      {
+                        "title": "Важное объявление",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/news"
+                      },
+                      {
+                        "title": "Событие ЕвроДон",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/news"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        }
+      ],
+      "assetsRefs": [],
+      "settings": {}
+    }
+  },
+  {
+    "slug": "article-magazine",
+    "name": "Экспертный лонгрид",
+    "description": "Журнальная обложка, авторская цитата, основная колонка и закреплённая памятка.",
+    "category": "articles",
+    "contentType": "article",
+    "sectionKey": "articles",
+    "routePath": "",
+    "document": {
+      "schemaVersion": "1.0",
+      "pageMeta": {
+        "title": null,
+        "seoTitle": null,
+        "metaDescription": null,
+        "canonical": null,
+        "robots": "index,follow",
+        "ogTitle": null,
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "sitemapPriority": 0.5,
+        "changeFrequency": "monthly"
+      },
+      "layout": {
+        "shell": "about",
+        "showPageTitle": false,
+        "breadcrumbs": "auto"
+      },
+      "locale": "ru",
+      "blocks": [
+        {
+          "id": "magazine-head",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "article-magazine",
+            "backgroundType": "color",
+            "backgroundColor": "#eff6ff",
+            "foreground": "#172033",
+            "paddingTop": 48,
+            "paddingBottom": 48,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "magazine-head-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "magazine-head-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "cover-copy",
+                    "gap": "large",
+                    "alignItems": "center",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "magazine-cover-wrap",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "magazine-cover",
+                          "type": "image",
+                          "version": "1.0",
+                          "props": {
+                            "usePageCover": true,
+                            "alt": "",
+                            "decorative": true,
+                            "caption": "",
+                            "link": "",
+                            "width": "100%",
+                            "align": "left",
+                            "borderRadius": 24,
+                            "lazyLoad": false,
+                            "focalPoint": "50% 50%",
+                            "fit": "cover",
+                            "ratio": "4/3"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "magazine-head-copy",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "magazine-meta",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p><strong>ЗДОРОВЬЕ · МАММОЛОГИЯ · 12 МИНУТ ЧТЕНИЯ</strong></p>",
+                            "variant": "eyebrow",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-h1",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Уплотнение в груди: когда срочно обращаться к маммологу",
+                            "level": "h1",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-lead",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Не каждое образование связано с онкологией. Но определить его характер без обследования невозможно.</p><p><strong>Марина Манвелян</strong><br>Онколог-маммолог ЕвроДон-Вавилова</p>",
+                            "variant": "lead",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "magazine-content",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-panel",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 40,
+            "paddingBottom": 40,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "magazine-content-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "magazine-content-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "content-aside",
+                    "gap": "large",
+                    "alignItems": "start",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "magazine-main",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "magazine-intro",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Обнаружить уплотнение может женщина любого возраста. Такая находка вызывает тревогу, однако многие изменения оказываются доброкачественными и успешно поддаются наблюдению или лечению.</p>",
+                            "variant": "default",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-quote",
+                          "type": "quote",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Главное правило — не откладывать визит и не пытаться поставить диагноз самостоятельно.",
+                            "author": "Марина Манвелян, онколог-маммолог",
+                            "sourceUrl": "",
+                            "layout": "large"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-causes-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Почему появляются уплотнения",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-causes",
+                          "type": "list",
+                          "version": "1.0",
+                          "props": {
+                            "style": "numbers",
+                            "items": [
+                              {
+                                "text": "Гормональные изменения и мастопатия"
+                              },
+                              {
+                                "text": "Кисты молочной железы"
+                              },
+                              {
+                                "text": "Фиброаденомы"
+                              },
+                              {
+                                "text": "Воспалительные процессы и последствия травм"
+                              }
+                            ]
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-diagnostics-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Какие обследования назначает врач",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-diagnostics",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>До 40 лет основным методом обычно становится УЗИ. При необходимости врач назначает биопсию и анализы на гормоны. Тактика зависит от возраста, жалоб и результатов осмотра.</p>",
+                            "variant": "default",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-prevention-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Как снизить риск осложнений",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-prevention",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Ежегодно посещайте врача, проводите самообследование и не откладывайте диагностику при новых симптомах.</p>",
+                            "variant": "default",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "magazine-aside",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "magazine-aside-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Обратитесь быстрее, если",
+                            "level": "h3",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-red-flags",
+                          "type": "list",
+                          "version": "1.0",
+                          "props": {
+                            "style": "checks",
+                            "items": [
+                              {
+                                "text": "Уплотнение быстро растёт"
+                              },
+                              {
+                                "text": "Изменилась форма груди или соска"
+                              },
+                              {
+                                "text": "Есть кровянистые выделения"
+                              },
+                              {
+                                "text": "Увеличились лимфоузлы"
+                              }
+                            ]
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "magazine-aside-button",
+                          "type": "button",
+                          "version": "1.0",
+                          "props": {
+                            "label": "Найти маммолога",
+                            "url": "/doctors",
+                            "target": "_self",
+                            "variant": "primary",
+                            "size": "medium",
+                            "icon": "",
+                            "fullWidth": true
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "magazine-faq-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 24,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "magazine-faq-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "magazine-faq-h",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Ответы на частые вопросы",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "magazine-faq",
+                  "type": "faq",
+                  "version": "1.0",
+                  "props": {
+                    "schemaMarkup": true,
+                    "items": [
+                      {
+                        "question": "Всегда ли уплотнение означает рак?",
+                        "answer": "<p>Нет. Большинство находок доброкачественные, но отличить их без обследования нельзя.</p>"
+                      },
+                      {
+                        "question": "Можно ли сначала понаблюдать?",
+                        "answer": "<p>Новый симптом лучше показать врачу, особенно если он растёт или меняется.</p>"
+                      },
+                      {
+                        "question": "Нужно ли направление?",
+                        "answer": "<p>Для записи к маммологу направление не требуется.</p>"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "magazine-cta",
+                  "type": "cta",
+                  "version": "1.0",
+                  "props": {
+                    "title": "Записаться к маммологу",
+                    "text": "Подберём врача, филиал и удобное время.",
+                    "buttons": [
+                      {
+                        "label": "Записаться на приём",
+                        "url": "/doctors",
+                        "variant": "primary"
+                      }
+                    ],
+                    "background": "#2563eb",
+                    "layout": "split"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "magazine-related-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-related",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 32,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "magazine-related-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "magazine-related-heading",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Другие статьи",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "magazine-related",
+                  "type": "pageList",
+                  "version": "1.0",
+                  "props": {
+                    "sourceType": "manual",
+                    "source": "",
+                    "limit": 3,
+                    "sort": "newest",
+                    "cardTemplate": "image",
+                    "items": [
+                      {
+                        "title": "Материал врача",
+                        "description": "Краткое описание связанного материала.",
+                        "href": "/about/articles"
+                      },
+                      {
+                        "title": "Полезная статья",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/articles"
+                      },
+                      {
+                        "title": "Советы специалиста",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/articles"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        }
+      ],
+      "assetsRefs": [],
+      "settings": {}
+    }
+  },
+  {
+    "slug": "article-checklist",
+    "name": "Чек-лист обследований",
+    "description": "Тёплая карточная структура: сроки, четыре шага, списки анализов и FAQ.",
+    "category": "articles",
+    "contentType": "article",
+    "sectionKey": "articles",
+    "routePath": "",
+    "document": {
+      "schemaVersion": "1.0",
+      "pageMeta": {
+        "title": null,
+        "seoTitle": null,
+        "metaDescription": null,
+        "canonical": null,
+        "robots": "index,follow",
+        "ogTitle": null,
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "sitemapPriority": 0.5,
+        "changeFrequency": "monthly"
+      },
+      "layout": {
+        "shell": "about",
+        "showPageTitle": false,
+        "breadcrumbs": "auto"
+      },
+      "locale": "ru",
+      "blocks": [
+        {
+          "id": "checklist-head",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "article-checklist",
+            "backgroundType": "color",
+            "backgroundColor": "#fffbeb",
+            "foreground": "#172033",
+            "paddingTop": 52,
+            "paddingBottom": 52,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "checklist-head-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "checklist-meta",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p><strong>ЧЕК-ЛИСТ · ПОДГОТОВКА · 10 МИНУТ ЧТЕНИЯ</strong></p>",
+                    "variant": "eyebrow",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "checklist-h1",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Подготовка к беременности: какие обследования пройти",
+                    "level": "h1",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "checklist-lead",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p>Начать подготовку лучше за 3–6 месяцев. За это время можно скорректировать дефициты и снизить риски для мамы и ребёнка.</p>",
+                    "variant": "lead",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "checklist-steps-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 24,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "checklist-steps-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "checklist-steps",
+                  "type": "featureList",
+                  "version": "1.0",
+                  "props": {
+                    "iconStyle": "number",
+                    "columns": 4,
+                    "items": [
+                      {
+                        "title": "Гинеколог",
+                        "text": "Анамнез и персональный список обследований.",
+                        "icon": "1"
+                      },
+                      {
+                        "title": "Анализы",
+                        "text": "Кровь, моча, инфекции и дефициты.",
+                        "icon": "2"
+                      },
+                      {
+                        "title": "Диагностика",
+                        "text": "УЗИ и обследования по показаниям.",
+                        "icon": "3"
+                      },
+                      {
+                        "title": "План",
+                        "text": "Рекомендации для обоих партнёров.",
+                        "icon": "4"
+                      }
+                    ],
+                    "title": "Маршрут подготовки"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "checklist-content",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-panel",
+            "backgroundType": "color",
+            "backgroundColor": "#fffbeb",
+            "foreground": "#172033",
+            "paddingTop": 36,
+            "paddingBottom": 36,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "checklist-content-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "checklist-content-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "content-aside",
+                    "gap": "large",
+                    "alignItems": "stretch",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "checklist-main",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "checklist-labs-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Базовые анализы",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "checklist-labs",
+                          "type": "list",
+                          "version": "1.0",
+                          "props": {
+                            "style": "checks",
+                            "items": [
+                              {
+                                "text": "Общий анализ крови и мочи"
+                              },
+                              {
+                                "text": "Биохимия, ферритин и витамин D"
+                              },
+                              {
+                                "text": "ТТГ и другие гормоны по показаниям"
+                              },
+                              {
+                                "text": "Инфекции и иммунитет к краснухе"
+                              }
+                            ]
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "checklist-doctors-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Каких специалистов пройти",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "checklist-doctors",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Начните с акушера-гинеколога. Затем — терапевт, стоматолог и узкие специалисты при хронических заболеваниях или жалобах.</p>",
+                            "variant": "default",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "checklist-aside",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "checklist-aside-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Перед визитом",
+                            "level": "h3",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "checklist-aside-list",
+                          "type": "list",
+                          "version": "1.0",
+                          "props": {
+                            "style": "bullets",
+                            "items": [
+                              {
+                                "text": "Соберите выписки и результаты прошлых исследований"
+                              },
+                              {
+                                "text": "Запишите лекарства и добавки"
+                              },
+                              {
+                                "text": "Подготовьте вопросы врачу"
+                              }
+                            ]
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "checklist-faq-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 24,
+            "paddingBottom": 24,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "checklist-faq-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "checklist-faq",
+                  "type": "faq",
+                  "version": "1.0",
+                  "props": {
+                    "schemaMarkup": true,
+                    "items": [
+                      {
+                        "question": "Можно ли сдать всё в один день?",
+                        "answer": "<p>Часть исследований — да, но некоторые требуют подготовки и разных дней цикла.</p>"
+                      },
+                      {
+                        "question": "Нужно ли обследование партнёру?",
+                        "answer": "<p>Часто да. Персональный список определит врач после беседы.</p>"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "checklist-cta",
+                  "type": "cta",
+                  "version": "1.0",
+                  "props": {
+                    "title": "Составить персональный план",
+                    "text": "Запишитесь к акушеру-гинекологу.",
+                    "buttons": [
+                      {
+                        "label": "Записаться на приём",
+                        "url": "/doctors",
+                        "variant": "primary"
+                      }
+                    ],
+                    "background": "#d97706",
+                    "layout": "split"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "checklist-related-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-related",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 32,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "checklist-related-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "checklist-related-heading",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Другие статьи",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "checklist-related",
+                  "type": "pageList",
+                  "version": "1.0",
+                  "props": {
+                    "sourceType": "manual",
+                    "source": "",
+                    "limit": 3,
+                    "sort": "newest",
+                    "cardTemplate": "image",
+                    "items": [
+                      {
+                        "title": "Материал врача",
+                        "description": "Краткое описание связанного материала.",
+                        "href": "/about/articles"
+                      },
+                      {
+                        "title": "Полезная статья",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/articles"
+                      },
+                      {
+                        "title": "Советы специалиста",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/articles"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        }
+      ],
+      "assetsRefs": [],
+      "settings": {}
+    }
+  },
+  {
+    "slug": "article-kids",
+    "name": "Для родителей",
+    "description": "Мягкая семейная верстка: обложка, частые причины, домашняя помощь и красные флаги.",
+    "category": "articles",
+    "contentType": "article",
+    "sectionKey": "articles",
+    "routePath": "",
+    "document": {
+      "schemaVersion": "1.0",
+      "pageMeta": {
+        "title": null,
+        "seoTitle": null,
+        "metaDescription": null,
+        "canonical": null,
+        "robots": "index,follow",
+        "ogTitle": null,
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "sitemapPriority": 0.5,
+        "changeFrequency": "monthly"
+      },
+      "layout": {
+        "shell": "about",
+        "showPageTitle": false,
+        "breadcrumbs": "auto"
+      },
+      "locale": "ru",
+      "blocks": [
+        {
+          "id": "kids-head",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "article-kids",
+            "backgroundType": "color",
+            "backgroundColor": "#ecfdf5",
+            "foreground": "#172033",
+            "paddingTop": 52,
+            "paddingBottom": 52,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "kids-head-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "kids-head-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "content-aside",
+                    "gap": "large",
+                    "alignItems": "center",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "kids-head-copy",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "kids-meta",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p><strong>ДЕТСКОЕ ЗДОРОВЬЕ · ПАМЯТКА РОДИТЕЛЯМ</strong></p>",
+                            "variant": "eyebrow",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "kids-h1",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Боль в животе у ребёнка: причины и что делать родителям",
+                            "level": "h1",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "kids-lead",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Чаще всего причина неопасна, но возраст ребёнка и сопутствующие симптомы меняют тактику.</p>",
+                            "variant": "lead",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "kids-cover-wrap",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "kids-cover",
+                          "type": "image",
+                          "version": "1.0",
+                          "props": {
+                            "usePageCover": true,
+                            "alt": "",
+                            "decorative": true,
+                            "caption": "",
+                            "link": "",
+                            "width": "100%",
+                            "align": "left",
+                            "borderRadius": 24,
+                            "lazyLoad": false,
+                            "focalPoint": "50% 50%",
+                            "fit": "cover",
+                            "ratio": "1/1"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "kids-causes-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 24,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "kids-causes-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "kids-causes",
+                  "type": "featureList",
+                  "version": "1.0",
+                  "props": {
+                    "iconStyle": "custom",
+                    "columns": 3,
+                    "items": [
+                      {
+                        "title": "Питание",
+                        "text": "Переедание, непривычная пища или запор.",
+                        "icon": "●"
+                      },
+                      {
+                        "title": "Инфекция",
+                        "text": "Боль вместе с температурой или рвотой.",
+                        "icon": "●"
+                      },
+                      {
+                        "title": "Стресс",
+                        "text": "Переживания могут проявляться телесно.",
+                        "icon": "●"
+                      }
+                    ],
+                    "title": "Частые причины"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "kids-actions",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-panel",
+            "backgroundType": "color",
+            "backgroundColor": "#f0fdf4",
+            "foreground": "#172033",
+            "paddingTop": 36,
+            "paddingBottom": 36,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "kids-actions-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "kids-actions-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "equal",
+                    "gap": "large",
+                    "alignItems": "stretch",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "kids-home",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "kids-home-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Что можно сделать дома",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "kids-home-list",
+                          "type": "list",
+                          "version": "1.0",
+                          "props": {
+                            "style": "checks",
+                            "items": [
+                              {
+                                "text": "Предлагать воду небольшими порциями"
+                              },
+                              {
+                                "text": "Не заставлять есть"
+                              },
+                              {
+                                "text": "Следить за температурой и активностью"
+                              },
+                              {
+                                "text": "Не давать лекарства без назначения"
+                              }
+                            ]
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "kids-urgent",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "kids-urgent-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "К врачу сегодня",
+                            "level": "h3",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "kids-urgent-list",
+                          "type": "list",
+                          "version": "1.0",
+                          "props": {
+                            "style": "bullets",
+                            "items": [
+                              {
+                                "text": "Боль усиливается или мешает спать"
+                              },
+                              {
+                                "text": "Повторная рвота или отказ от питья"
+                              },
+                              {
+                                "text": "Ребёнок вялый, есть кровь или высокая температура"
+                              }
+                            ]
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "kids-faq-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 28,
+            "paddingBottom": 24,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "kids-faq-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "kids-quote",
+                  "type": "quote",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Если поведение ребёнка заметно отличается от обычного, лучше показать его врачу, даже когда список симптомов кажется «неполным».",
+                    "author": "Имя Фамилия, педиатр",
+                    "sourceUrl": "",
+                    "layout": "compact"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "kids-faq",
+                  "type": "faq",
+                  "version": "1.0",
+                  "props": {
+                    "schemaMarkup": true,
+                    "items": [
+                      {
+                        "question": "Можно ли дать обезболивающее?",
+                        "answer": "<p>Оно может смазать картину. При сильной боли сначала свяжитесь с врачом.</p>"
+                      },
+                      {
+                        "question": "Нужен педиатр или узкий специалист?",
+                        "answer": "<p>Начните с педиатра — он определит дальнейший маршрут.</p>"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "kids-cta",
+                  "type": "cta",
+                  "version": "1.0",
+                  "props": {
+                    "title": "Записать ребёнка к педиатру",
+                    "text": "Выберите филиал и удобный слот.",
+                    "buttons": [
+                      {
+                        "label": "Записаться на приём",
+                        "url": "/doctors",
+                        "variant": "primary"
+                      }
+                    ],
+                    "background": "#059669",
+                    "layout": "split"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "kids-related-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-related",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 32,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "kids-related-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "kids-related-heading",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Другие статьи",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "kids-related",
+                  "type": "pageList",
+                  "version": "1.0",
+                  "props": {
+                    "sourceType": "manual",
+                    "source": "",
+                    "limit": 3,
+                    "sort": "newest",
+                    "cardTemplate": "image",
+                    "items": [
+                      {
+                        "title": "Материал врача",
+                        "description": "Краткое описание связанного материала.",
+                        "href": "/about/articles"
+                      },
+                      {
+                        "title": "Полезная статья",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/articles"
+                      },
+                      {
+                        "title": "Советы специалиста",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/articles"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        }
+      ],
+      "assetsRefs": [],
+      "settings": {}
+    }
+  },
+  {
+    "slug": "article-triage",
+    "name": "Симптом и красные флаги",
+    "description": "Контрастная клиническая верстка: срочность, две сценарные карточки и диагностика.",
+    "category": "articles",
+    "contentType": "article",
+    "sectionKey": "articles",
+    "routePath": "",
+    "document": {
+      "schemaVersion": "1.0",
+      "pageMeta": {
+        "title": null,
+        "seoTitle": null,
+        "metaDescription": null,
+        "canonical": null,
+        "robots": "index,follow",
+        "ogTitle": null,
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "sitemapPriority": 0.5,
+        "changeFrequency": "monthly"
+      },
+      "layout": {
+        "shell": "about",
+        "showPageTitle": false,
+        "breadcrumbs": "auto"
+      },
+      "locale": "ru",
+      "blocks": [
+        {
+          "id": "triage-head",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "article-triage",
+            "backgroundType": "color",
+            "backgroundColor": "#fef2f2",
+            "foreground": "#172033",
+            "paddingTop": 48,
+            "paddingBottom": 48,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "triage-head-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "triage-meta",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p><strong>СИМПТОМЫ · ГАСТРОЭНТЕРОЛОГИЯ · ВАЖНО</strong></p>",
+                    "variant": "eyebrow",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "triage-h1",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Почему болит живот: причины и когда срочно к врачу",
+                    "level": "h1",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "triage-lead",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p>Причины бывают безобидными и опасными. Ориентируйтесь не только на силу боли, но и на сопутствующие симптомы.</p>",
+                    "variant": "lead",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "triage-cards-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 28,
+            "paddingBottom": 20,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "triage-cards-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "triage-cards",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "equal",
+                    "gap": "medium",
+                    "alignItems": "stretch",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "triage-cards-col-0",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "triage-observe",
+                          "type": "card",
+                          "version": "1.0",
+                          "props": {
+                            "imageAlt": "",
+                            "title": "Можно записаться планово",
+                            "text": "<p>Дискомфорт умеренный, не усиливается, нет температуры и рвоты, общее состояние обычное.</p>",
+                            "link": "",
+                            "button": "",
+                            "elevated": false
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "triage-cards-col-1",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "triage-urgent",
+                          "type": "card",
+                          "version": "1.0",
+                          "props": {
+                            "imageAlt": "",
+                            "title": "Нужен врач сегодня",
+                            "text": "<p>Резкая или нарастающая боль, высокая температура, повторная рвота, кровь, выраженная слабость.</p>",
+                            "link": "",
+                            "button": "",
+                            "elevated": true
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "triage-content",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-panel",
+            "backgroundType": "color",
+            "backgroundColor": "#fff7ed",
+            "foreground": "#172033",
+            "paddingTop": 36,
+            "paddingBottom": 36,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "triage-content-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "triage-content-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "content-aside",
+                    "gap": "large",
+                    "alignItems": "stretch",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "triage-main",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "triage-causes-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Частые причины",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "triage-causes",
+                          "type": "list",
+                          "version": "1.0",
+                          "props": {
+                            "style": "numbers",
+                            "items": [
+                              {
+                                "text": "Переедание, непривычная пища и нарушение моторики"
+                              },
+                              {
+                                "text": "Гастрит, желчный пузырь или поджелудочная железа"
+                              },
+                              {
+                                "text": "Кишечная инфекция"
+                              },
+                              {
+                                "text": "Состояния, требующие осмотра хирурга"
+                              }
+                            ]
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "triage-diagnostics-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Что назначает врач",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "triage-diagnostics",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>После осмотра могут понадобиться анализы крови, УЗИ брюшной полости, эндоскопия или консультация хирурга. Не сдавайте большой набор исследований заранее.</p>",
+                            "variant": "default",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "triage-aside",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "triage-aside-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Не делайте до осмотра",
+                            "level": "h3",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "triage-dont",
+                          "type": "list",
+                          "version": "1.0",
+                          "props": {
+                            "style": "bullets",
+                            "items": [
+                              {
+                                "text": "Не грейте живот"
+                              },
+                              {
+                                "text": "Не принимайте обезболивающее курсом"
+                              },
+                              {
+                                "text": "Не откладывайте визит при ухудшении"
+                              }
+                            ]
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "triage-faq-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "default",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 24,
+            "paddingBottom": 24,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "triage-faq-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "triage-faq",
+                  "type": "faq",
+                  "version": "1.0",
+                  "props": {
+                    "schemaMarkup": true,
+                    "items": [
+                      {
+                        "question": "Можно ли выпить обезболивающее?",
+                        "answer": "<p>При сильной боли оно может скрыть важные симптомы. Лучше сначала связаться с врачом.</p>"
+                      },
+                      {
+                        "question": "К какому врачу записаться?",
+                        "answer": "<p>Начните с терапевта или гастроэнтеролога; при острой боли — с неотложной помощи.</p>"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "triage-cta",
+                  "type": "cta",
+                  "version": "1.0",
+                  "props": {
+                    "title": "Не откладывайте диагностику",
+                    "text": "Подберём профильного врача и ближайший филиал.",
+                    "buttons": [
+                      {
+                        "label": "Записаться на приём",
+                        "url": "/doctors",
+                        "variant": "primary"
+                      }
+                    ],
+                    "background": "#dc2626",
+                    "layout": "split"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "triage-related-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-related",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 32,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "triage-related-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "triage-related-heading",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Другие статьи",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "triage-related",
+                  "type": "pageList",
+                  "version": "1.0",
+                  "props": {
+                    "sourceType": "manual",
+                    "source": "",
+                    "limit": 3,
+                    "sort": "newest",
+                    "cardTemplate": "image",
+                    "items": [
+                      {
+                        "title": "Материал врача",
+                        "description": "Краткое описание связанного материала.",
+                        "href": "/about/articles"
+                      },
+                      {
+                        "title": "Полезная статья",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/articles"
+                      },
+                      {
+                        "title": "Советы специалиста",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/articles"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        }
+      ],
+      "assetsRefs": [],
+      "settings": {}
+    }
+  },
+  {
+    "slug": "article-minimal",
+    "name": "Редакционная колонка",
+    "description": "Широкая газетная колонка с контейнерами: крупная типографика, цитата, список и блок записи.",
+    "category": "articles",
+    "contentType": "article",
+    "sectionKey": "articles",
+    "routePath": "",
+    "document": {
+      "schemaVersion": "1.0",
+      "pageMeta": {
+        "title": null,
+        "seoTitle": null,
+        "metaDescription": null,
+        "canonical": null,
+        "robots": "index,follow",
+        "ogTitle": null,
+        "ogDescription": null,
+        "ogImage": null,
+        "twitterCard": "summary_large_image",
+        "sitemapPriority": 0.5,
+        "changeFrequency": "monthly"
+      },
+      "layout": {
+        "shell": "about",
+        "showPageTitle": false,
+        "breadcrumbs": "auto"
+      },
+      "locale": "ru",
+      "blocks": [
+        {
+          "id": "minimal-head",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "article-minimal",
+            "backgroundType": "color",
+            "backgroundColor": "#ffffff",
+            "foreground": "#172033",
+            "paddingTop": 52,
+            "paddingBottom": 44,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "minimal-head-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "minimal-meta",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p><strong>РЕДАКЦИОННАЯ КОЛОНКА · 7 МИНУТ ЧТЕНИЯ</strong></p>",
+                    "variant": "eyebrow",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "minimal-h1",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Современная медицина в Ростове-на-Дону",
+                    "level": "h1",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "minimal-lead",
+                  "type": "text",
+                  "version": "1.0",
+                  "props": {
+                    "html": "<p>Медицинская помощь становится удобнее, когда консультации, диагностика и анализы объединены в один понятный маршрут.</p>",
+                    "variant": "lead",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "minimal-body",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-panel",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 28,
+            "paddingBottom": 36,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "minimal-body-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "minimal-body-columns",
+                  "type": "columns",
+                  "version": "1.0",
+                  "props": {
+                    "layout": 2,
+                    "ratio": "content-aside",
+                    "gap": "large",
+                    "alignItems": "start",
+                    "stackOnMobile": true
+                  },
+                  "children": [
+                    {
+                      "id": "minimal-main",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "minimal-intro",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Выбор клиники начинается не с рекламного обещания, а с простых вопросов: есть ли врачи нужного профиля, можно ли пройти исследования на месте и как быстро пациент получает результат.</p>",
+                            "variant": "default",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "minimal-system-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Медицина как единая система",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "minimal-system",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Когда лаборатория, диагностика и специалисты работают вместе, врачу проще видеть полную картину, а пациенту не приходится самостоятельно собирать маршрут по разным учреждениям.</p>",
+                            "variant": "default",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "minimal-quote",
+                          "type": "quote",
+                          "version": "1.0",
+                          "props": {
+                            "text": "Хороший медицинский сервис — это не только оборудование, но и понятность каждого следующего шага.",
+                            "author": "Редакция ЕвроДон",
+                            "sourceUrl": "",
+                            "layout": "compact"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "minimal-choice-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "На что смотреть при выборе клиники",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "minimal-choice",
+                          "type": "list",
+                          "version": "1.0",
+                          "props": {
+                            "style": "bullets",
+                            "items": [
+                              {
+                                "text": "Квалификация врачей и доступность расписания"
+                              },
+                              {
+                                "text": "Диагностика и лаборатория на месте"
+                              },
+                              {
+                                "text": "Прозрачный прайс"
+                              },
+                              {
+                                "text": "Филиал рядом с домом"
+                              }
+                            ]
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "minimal-start-h",
+                          "type": "heading",
+                          "version": "1.0",
+                          "props": {
+                            "text": "С чего начать",
+                            "level": "h2",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        },
+                        {
+                          "id": "minimal-start",
+                          "type": "text",
+                          "version": "1.0",
+                          "props": {
+                            "html": "<p>Если вы не знаете, какой специалист нужен, запишитесь к терапевту. Он оценит жалобы и составит маршрут без лишних исследований.</p>",
+                            "variant": "default",
+                            "align": "left"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    },
+                    {
+                      "id": "minimal-aside",
+                      "type": "container",
+                      "version": "1.0",
+                      "props": {
+                        "width": "full",
+                        "align": "center"
+                      },
+                      "children": [
+                        {
+                          "id": "minimal-cta",
+                          "type": "cta",
+                          "version": "1.0",
+                          "props": {
+                            "title": "Найти врача",
+                            "text": "Выберите направление, филиал и время онлайн.",
+                            "buttons": [
+                              {
+                                "label": "Записаться на приём",
+                                "url": "/doctors",
+                                "variant": "primary"
+                              }
+                            ],
+                            "background": "#172033",
+                            "layout": "stacked"
+                          },
+                          "children": [],
+                          "slots": {}
+                        }
+                      ],
+                      "slots": {}
+                    }
+                  ],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        },
+        {
+          "id": "minimal-related-section",
+          "type": "section",
+          "version": "1.0",
+          "props": {
+            "anchorId": "",
+            "styleVariant": "editorial-related",
+            "backgroundType": "color",
+            "backgroundColor": "#f8fafc",
+            "foreground": "#172033",
+            "paddingTop": 32,
+            "paddingBottom": 32,
+            "containerWidth": "full",
+            "visibility": true
+          },
+          "children": [
+            {
+              "id": "minimal-related-section-container",
+              "type": "container",
+              "version": "1.0",
+              "props": {
+                "width": "wide",
+                "align": "center"
+              },
+              "children": [
+                {
+                  "id": "minimal-related-heading",
+                  "type": "heading",
+                  "version": "1.0",
+                  "props": {
+                    "text": "Другие статьи",
+                    "level": "h2",
+                    "align": "left"
+                  },
+                  "children": [],
+                  "slots": {}
+                },
+                {
+                  "id": "minimal-related",
+                  "type": "pageList",
+                  "version": "1.0",
+                  "props": {
+                    "sourceType": "manual",
+                    "source": "",
+                    "limit": 3,
+                    "sort": "newest",
+                    "cardTemplate": "image",
+                    "items": [
+                      {
+                        "title": "Материал врача",
+                        "description": "Краткое описание связанного материала.",
+                        "href": "/about/articles"
+                      },
+                      {
+                        "title": "Полезная статья",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/articles"
+                      },
+                      {
+                        "title": "Советы специалиста",
+                        "description": "Замените карточку на актуальную публикацию.",
+                        "href": "/about/articles"
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "slots": {}
+                }
+              ],
+              "slots": {}
+            }
+          ],
+          "slots": {}
+        }
+      ],
+      "assetsRefs": [],
+      "settings": {}
+    }
+  }
+]

@@ -14,6 +14,7 @@ export {
   defaultIntegrationAdapters,
   defaultIntegrationSlots,
   defaultLinkResolver,
+  publicSiteUrl,
   safeMediaUrl,
   safeNavigationUrl,
 } from './integrations.js';

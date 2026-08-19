@@ -19,19 +19,70 @@ const normalizeOption = (option) => (
     : { value: option, label: String(option) }
 );
 
-function BasicField({ field, value, onChange, references = {} }) {
-  const id = `field-${field.name}`;
-  const referenceName = field.referenceName || field.name;
-  if (referenceName === 'assetId' || ['backgroundImage', 'posterAssetId', 'ogImage'].includes(referenceName)) {
-    return (
+const MEDIA_REFERENCE_FIELDS = new Set([
+  'assetId',
+  'backgroundImage',
+  'posterAssetId',
+  'ogImage',
+  'image',
+  'coverAssetId',
+]);
+
+function MediaField({ id, label, value, onChange, references = {} }) {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState('');
+  const assets = references.assets || [];
+  const selected = assets.find((asset) => asset.id === value);
+
+  const uploadFromComputer = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file || !references.uploadMedia) return;
+    setUploading(true);
+    setError('');
+    try {
+      const asset = await references.uploadMedia(file);
+      if (asset?.id) onChange(asset.id);
+    } catch (nextError) {
+      setError(nextError.message || 'Не удалось загрузить файл.');
+    } finally {
+      event.target.value = '';
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="pb-media-field">
       <label htmlFor={id}>
-        <span>{field.label}</span>
+        <span>{label}</span>
         <select id={id} value={value || ''} onChange={(event) => onChange(event.target.value)}>
           <option value="">Выберите медиафайл…</option>
-          {(references.assets || []).map((asset) => <option value={asset.id} key={asset.id}>{asset.filename || asset.name}</option>)}
+          {assets.map((asset) => <option value={asset.id} key={asset.id}>{asset.filename || asset.name}</option>)}
         </select>
       </label>
-    );
+      <label className="pb-media-field__upload">
+        <span>{uploading ? 'Загрузка файла…' : 'Или загрузите с компьютера'}</span>
+        <input type="file" onChange={uploadFromComputer} disabled={uploading || !references.uploadMedia} />
+      </label>
+      {selected?.url && (
+        <div className="pb-media-field__meta">
+          <small>{selected.filename || selected.name}</small>
+        </div>
+      )}
+      {error && <p className="pb-alert pb-alert--error">{error}</p>}
+    </div>
+  );
+}
+
+function BasicField({ field, value, onChange, references = {}, itemContext = null }) {
+  const id = `field-${field.name}`;
+  const referenceName = field.referenceName || field.name;
+  const fieldType = itemContext?.type || null;
+  const showOptions = ['select', 'radio'].includes(fieldType);
+  const showValue = ['hidden', 'text', 'textarea', 'email', 'phone', 'number', 'select', 'radio'].includes(fieldType);
+  const showPattern = ['text', 'email', 'phone', 'textarea'].includes(fieldType);
+
+  if (MEDIA_REFERENCE_FIELDS.has(referenceName) || field.type === 'image') {
+    return <MediaField id={id} label={field.label} value={value} onChange={onChange} references={references} />;
   }
   if (referenceName === 'formId') {
     return (
@@ -78,10 +129,28 @@ function BasicField({ field, value, onChange, references = {} }) {
     return (
       <label htmlFor={id}>
         <span>{field.label}</span>
-        <input id={id} type="number" min={field.min} max={field.max} value={value ?? ''} onChange={(event) => onChange(Number(event.target.value))} />
+        <input
+          id={id}
+          type="number"
+          min={field.min}
+          max={field.max}
+          value={value ?? ''}
+          onChange={(event) => {
+            const raw = event.target.value;
+            if (raw === '') {
+              onChange('');
+              return;
+            }
+            const parsed = Number(raw);
+            onChange(Number.isFinite(parsed) ? parsed : value);
+          }}
+        />
       </label>
     );
   }
+  if (field.name === 'options' && !showOptions) return null;
+  if (field.name === 'value' && !showValue) return null;
+  if (['minLength', 'maxLength', 'pattern'].includes(field.name) && !showPattern) return null;
   return (
     <label htmlFor={id}>
       <span>{field.label}{field.required && <span aria-hidden="true"> *</span>}</span>
@@ -101,7 +170,37 @@ function BasicField({ field, value, onChange, references = {} }) {
   );
 }
 
+function shouldShowBlockField(block, field) {
+  const props = block.props || {};
+  if (block.type === 'section') {
+    if (field.name === 'backgroundColor') return ['color', 'gradient'].includes(props.backgroundType);
+    if (field.name === 'backgroundImage') return props.backgroundType === 'image';
+    if (field.name === 'foreground') return props.backgroundType !== 'none';
+  }
+  if (block.type === 'form' && field.name === 'redirectUrl') {
+    return props.successAction === 'redirect';
+  }
+  if (block.type === 'breadcrumbs' && field.name === 'items') {
+    return props.source !== 'auto';
+  }
+  if (block.type === 'pageList') {
+    if (field.name === 'source') return props.sourceType !== 'manual';
+    if (field.name === 'items') return props.sourceType === 'manual';
+  }
+  return true;
+}
+
+function blockFieldLabel(block, field) {
+  if (block.type === 'pageList' && field.name === 'source') {
+    if (block.props.sourceType === 'folder') return 'Тип контента (contentType)';
+    if (block.props.sourceType === 'tag') return 'Раздел (section)';
+  }
+  return field.label;
+}
+
 function ItemsField({ field, value = [], onChange, references }) {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState('');
   const updateItem = (index, key, nextValue) => {
     const next = structuredClone(value);
     next[index] = { ...next[index], [key]: nextValue };
@@ -112,10 +211,41 @@ function ItemsField({ field, value = [], onChange, references }) {
     item.name,
     item.type === 'toggle' ? false : '',
   ]))]);
+  const supportsBulkMediaUpload = field.fields.some((item) => item.name === 'assetId')
+    && typeof references.uploadMedia === 'function';
+
+  const uploadItems = async (event) => {
+    const files = [...(event.target.files || [])];
+    if (!files.length || !supportsBulkMediaUpload) return;
+    setUploading(true);
+    setError('');
+    try {
+      const uploaded = [];
+      for (const file of files) {
+        const asset = await references.uploadMedia(file);
+        uploaded.push({
+          assetId: asset.id,
+          alt: '',
+        });
+      }
+      onChange([...(value || []), ...uploaded]);
+    } catch (nextError) {
+      setError(nextError.message || 'Не удалось загрузить файлы.');
+    } finally {
+      event.target.value = '';
+      setUploading(false);
+    }
+  };
 
   return (
     <fieldset className="pb-items-field">
       <legend>{field.label}</legend>
+      {supportsBulkMediaUpload && (
+        <label className="pb-media-field__upload">
+          <span>{uploading ? 'Загрузка файлов…' : 'Добавить файлы с компьютера'}</span>
+          <input type="file" multiple onChange={uploadItems} disabled={uploading} />
+        </label>
+      )}
       {value.map((item, index) => (
         <details open={value.length < 4} key={index}>
           <summary><span>{item.title || item.label || item.name || `Элемент ${index + 1}`}</span><span>{index + 1}</span></summary>
@@ -127,6 +257,7 @@ function ItemsField({ field, value = [], onChange, references }) {
                 value={item[itemField.name]}
                 onChange={(nextValue) => updateItem(index, itemField.name, nextValue)}
                 references={references}
+                itemContext={field.name === 'fields' ? item : null}
               />
             ))}
             <button className="pb-text-button pb-text-button--danger" type="button" onClick={() => remove(index)}>Удалить элемент</button>
@@ -134,6 +265,7 @@ function ItemsField({ field, value = [], onChange, references }) {
         </details>
       ))}
       <button className="pb-secondary-button pb-secondary-button--small" type="button" onClick={add}>+ Добавить элемент</button>
+      {error && <p className="pb-alert pb-alert--error">{error}</p>}
     </fieldset>
   );
 }
@@ -158,7 +290,7 @@ function ComplexField({ field, value, onChange, references }) {
   return <BasicField field={field} value={value} onChange={onChange} references={references} />;
 }
 
-function SeoPanel({ assets }) {
+function SeoPanel({ references }) {
   const title = useBuilderStore((state) => state.title);
   const slug = useBuilderStore((state) => state.slug);
   const seo = useBuilderStore((state) => state.seo);
@@ -172,7 +304,13 @@ function SeoPanel({ assets }) {
         <h2>Вид в поиске</h2>
         <label><span>SEO-заголовок <small>{seo.title.length}/60</small></span><input value={seo.title} onChange={(event) => updatePage({ seo: { title: event.target.value } })} placeholder={title} /></label>
         <label><span>Метаописание <small>{seo.description.length}/160</small></span><textarea rows="4" value={seo.description} onChange={(event) => updatePage({ seo: { description: event.target.value } })} /></label>
-        <label><span>Изображение для соцсетей</span><select value={seo.socialImage} onChange={(event) => updatePage({ seo: { socialImage: event.target.value } })}><option value="">Выберите медиафайл…</option>{assets.map((asset) => <option value={asset.id} key={asset.id}>{asset.filename || asset.name}</option>)}</select></label>
+        <MediaField
+          id="seo-social-image"
+          label="Изображение для соцсетей"
+          value={seo.socialImage}
+          onChange={(value) => updatePage({ seo: { socialImage: value } })}
+          references={references}
+        />
         <label><span>Канонический URL</span><input type="url" value={seo.canonical || ''} onChange={(event) => updatePage({ seo: { canonical: event.target.value } })} /></label>
         <label><span>Заголовок Open Graph</span><input value={seo.ogTitle || ''} onChange={(event) => updatePage({ seo: { ogTitle: event.target.value } })} /></label>
         <label><span>Описание Open Graph</span><textarea rows="3" value={seo.ogDescription || ''} onChange={(event) => updatePage({ seo: { ogDescription: event.target.value } })} /></label>
@@ -212,7 +350,7 @@ function SeoPanel({ assets }) {
   );
 }
 
-function PageSettingsPanel({ assets }) {
+function PageSettingsPanel({ references }) {
   const slug = useBuilderStore((state) => state.slug);
   const routePath = useBuilderStore((state) => state.routePath);
   const contentType = useBuilderStore((state) => state.contentType);
@@ -221,7 +359,7 @@ function PageSettingsPanel({ assets }) {
   const layout = useBuilderStore((state) => state.layout);
   const updatePage = useBuilderStore((state) => state.updatePage);
   const knownSection = SECTION_OPTIONS.some((option) => option.value === sectionKey);
-  const selectedCover = assets.find((asset) => asset.id === listingMeta.coverAssetId);
+  const selectedCover = (references.assets || []).find((asset) => asset.id === listingMeta.coverAssetId);
   const updateListingMeta = (patch) => updatePage({ listingMeta: patch });
   const updateLayout = (patch) => updatePage({ layout: patch });
 
@@ -333,18 +471,13 @@ function PageSettingsPanel({ assets }) {
             onChange={(event) => updateListingMeta({ excerpt: event.target.value })}
           />
         </label>
-        <label>
-          <span>Обложка</span>
-          <select
-            value={listingMeta.coverAssetId}
-            onChange={(event) => updateListingMeta({ coverAssetId: event.target.value })}
-          >
-            <option value="">Выберите медиафайл…</option>
-            {assets.map((asset) => (
-              <option value={asset.id} key={asset.id}>{asset.filename || asset.name}</option>
-            ))}
-          </select>
-        </label>
+        <MediaField
+          id="listing-cover"
+          label="Обложка"
+          value={listingMeta.coverAssetId}
+          onChange={(value) => updateListingMeta({ coverAssetId: value })}
+          references={references}
+        />
         {selectedCover?.url && (
           <figure className="pb-cover-preview">
             <img src={selectedCover.url} alt={selectedCover.alt || ''} />
@@ -431,6 +564,31 @@ export default function Inspector() {
   const definition = getBlockDefinition(block?.type);
   const siteId = useBuilderStore((state) => state.siteId);
   const [references, setReferences] = useState({ assets: [], forms: [] });
+
+  const refreshReferences = async () => {
+    if (!siteId) return;
+    const [assets, forms] = await Promise.all([
+      api.resources.list('media', { siteId, pageSize: 100 }),
+      api.resources.list('forms', { siteId }),
+    ]);
+    setReferences({ assets: assets.items || assets, forms: forms.items || forms });
+  };
+
+  const uploadMedia = async (file) => {
+    if (!siteId) throw new Error('Сначала выберите сайт для страницы.');
+    const payload = new FormData();
+    payload.append('siteId', siteId);
+    payload.append('file', file);
+    const created = await api.resources.create('media', payload);
+    await refreshReferences();
+    return {
+      ...created,
+      name: created.filename,
+      alt: created.altText,
+      url: created.url || `/api/v1/public/assets/${created.id}`,
+    };
+  };
+
   useEffect(() => {
     if (!siteId) return;
     let active = true;
@@ -454,8 +612,8 @@ export default function Inspector() {
         <button type="button" role="tab" aria-selected={tab === 'settings'} onClick={() => setTab('settings')}>Настройки</button>
         <button type="button" role="tab" aria-selected={tab === 'seo'} onClick={() => setTab('seo')}>SEO и проверки</button>
       </div>
-      {tab === 'seo' ? <SeoPanel assets={references.assets} /> : tab === 'settings' ? (
-        <PageSettingsPanel assets={references.assets} />
+      {tab === 'seo' ? <SeoPanel references={{ ...references, siteId, uploadMedia }} /> : tab === 'settings' ? (
+        <PageSettingsPanel references={{ ...references, siteId, uploadMedia }} />
       ) : block && definition ? (
         <div className="pb-inspector-form">
           <header className="pb-inspector-title">
@@ -464,13 +622,15 @@ export default function Inspector() {
           </header>
           {errors.length > 0 && <div className="pb-alert pb-alert--error">{errors.join('. ')}</div>}
           <section className="pb-inspector-section">
-            {definition.schema.map((field) => (
+            {definition.schema
+              .filter((field) => shouldShowBlockField(block, field))
+              .map((field) => (
               <ComplexField
                 key={field.name}
-                field={field}
+                field={{ ...field, label: blockFieldLabel(block, field) }}
                 value={block.props[field.name]}
                 onChange={(value) => updateBlock(block.id, { [field.name]: value })}
-                references={references}
+                references={{ ...references, siteId, uploadMedia }}
               />
             ))}
           </section>

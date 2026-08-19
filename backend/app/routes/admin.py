@@ -97,11 +97,23 @@ async def patch_user(
                 "last_admin",
                 "Нельзя удалить или лишить прав последнего активного администратора",
             )
+    if "username" in changes and payload.username is not None:
+        existing_username = await session.scalar(
+            select(User.id).where(
+                User.id != user.id,
+                User.username == payload.username,
+            )
+        )
+        if existing_username is not None:
+            raise AppError(409, "username_exists", "Учётная запись с таким логином уже существует")
     before = {
+        "username": user.username,
         "displayName": user.display_name,
         "role": user.role,
         "isActive": user.is_active,
     }
+    if "username" in changes:
+        user.username = payload.username
     if payload.display_name is not None:
         user.display_name = payload.display_name.strip()
     if payload.role is not None:
@@ -129,6 +141,7 @@ async def patch_user(
         details={
             "before": before,
             "after": {
+                "username": user.username,
                 "displayName": user.display_name,
                 "role": user.role,
                 "isActive": user.is_active,

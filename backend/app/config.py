@@ -83,6 +83,8 @@ class Settings(BaseSettings):
     batch_publish_max_items: int = Field(default=25, ge=1, le=100)
     rendition_widths: list[int] = Field(default_factory=lambda: [320, 640, 1024, 1600, 2048])
     image_quality: int = Field(default=85, ge=40, le=100)
+    image_max_bytes: int = Field(default=512_000, ge=32_768, le=5_242_880)
+    image_max_dimension: int = Field(default=2048, ge=640, le=8192)
     scheduler_enabled: bool = False
     scheduler_interval_seconds: float = Field(default=15.0, ge=1)
     worker_enabled: bool = False

@@ -4,6 +4,8 @@ import asyncio
 import hashlib
 import logging
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
+from uuid import uuid4
 
 from sqlalchemy import select
 
@@ -124,14 +126,37 @@ class BackgroundWorker:
                     normalize_uploaded_image,
                     source,
                     self.settings.image_quality,
+                    self.settings.image_max_bytes,
+                    self.settings.image_max_dimension,
                 )
                 checksum = hashlib.sha256(normalized.data).hexdigest()
-                if checksum != asset.checksum:
+                needs_rewrite = (
+                    checksum != asset.checksum
+                    or asset.content_type != normalized.content_type
+                    or not asset.object_key.endswith(normalized.extension)
+                )
+                if needs_rewrite:
+                    new_key = (
+                        f"{asset.site_id}/{datetime.now(UTC):%Y/%m}/"
+                        f"{uuid4().hex}{normalized.extension}"
+                    )
                     await self.storage.put(
-                        asset.object_key,
+                        new_key,
                         normalized.data,
                         normalized.content_type,
                     )
+                    old_key = asset.object_key
+                    asset.object_key = new_key
+                    if old_key != new_key:
+                        try:
+                            await self.storage.delete(old_key)
+                        except Exception:
+                            logger.warning(
+                                "failed to delete superseded asset object",
+                                extra={"object_key": old_key},
+                            )
+                    stem = Path(asset.filename).stem
+                    asset.filename = f"{stem}.webp"
                 asset.content_type = normalized.content_type
                 asset.byte_size = len(normalized.data)
                 asset.checksum = checksum
@@ -143,6 +168,8 @@ class BackgroundWorker:
                     normalized.data,
                     self.settings.rendition_widths,
                     self.settings.image_quality,
+                    self.settings.image_max_bytes,
+                    self.settings.image_max_dimension,
                 )
                 for item in generated:
                     rendition = await session.scalar(

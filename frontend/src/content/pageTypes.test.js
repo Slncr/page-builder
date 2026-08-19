@@ -67,13 +67,14 @@ describe('content types', () => {
       hiddenFromLists: false,
     });
 
-    for (const type of ['generic', 'news', 'article', 'service']) {
+    for (const type of ['generic', 'news', 'article', 'service', 'home', 'branch', 'vacancy']) {
       const content = createTemplateContent(type, `Template ${type}`);
       expect(content.rootOrder.length, type).toBeGreaterThan(0);
-      expect(Object.values(content.byId).some((block) => (
-        block.type === 'heading'
-        && block.props.level === 'h1'
-      )), type).toBe(true);
+      const hasTitle = Object.values(content.byId).some((block) => (
+        (block.type === 'heading' && block.props.level === 'h1')
+        || (block.type === 'hero' && block.props.title)
+      ));
+      expect(hasTitle, type).toBe(true);
     }
   });
 });

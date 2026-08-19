@@ -1,1 +1,1 @@
-ALEMBIC_HEAD = "0005_page_content_contract"
+ALEMBIC_HEAD = "0006_user_login"

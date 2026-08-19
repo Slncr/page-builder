@@ -14,6 +14,7 @@ async def test_authentication_rbac_and_bearer_support(client: httpx.AsyncClient)
         headers={"Authorization": f"Bearer {admin['accessToken']}"},
         json={
             "email": "viewer@example.com",
+            "username": "Viewer",
             "displayName": "Viewer",
             "password": "ViewerPassword123",
             "role": "Viewer",
@@ -21,17 +22,18 @@ async def test_authentication_rbac_and_bearer_support(client: httpx.AsyncClient)
     )
     assert created.status_code == 201
     assert created.json()["role"] == "Viewer"
+    assert created.json()["username"] == "viewer"
 
     denied_login = await client.post(
         "/api/v1/auth/login",
-        json={"email": "viewer@example.com", "password": "wrong"},
+        json={"login": "viewer", "password": "wrong"},
     )
     assert denied_login.status_code == 401
     assert denied_login.json()["error"]["code"] == "invalid_credentials"
 
     login = await client.post(
         "/api/v1/auth/login",
-        json={"email": "viewer@example.com", "password": "ViewerPassword123"},
+        json={"login": "VIEWER", "password": "ViewerPassword123"},
     )
     assert login.status_code == 200
     viewer_token = login.json()["accessToken"]
@@ -55,6 +57,42 @@ async def test_authentication_rbac_and_bearer_support(client: httpx.AsyncClient)
     )
     assert forbidden.status_code == 403
     assert forbidden.json()["error"]["code"] == "forbidden"
+
+
+async def test_admin_can_assign_a_unique_username_and_login_with_it(
+    client: httpx.AsyncClient,
+) -> None:
+    admin = await bootstrap_admin(client)
+    headers = {"Authorization": f"Bearer {admin['accessToken']}"}
+
+    assigned = await client.patch(
+        f"/api/v1/users/{admin['user']['id']}",
+        headers=headers,
+        json={"username": "Test"},
+    )
+    assert assigned.status_code == 200, assigned.text
+    assert assigned.json()["username"] == "test"
+
+    login = await client.post(
+        "/api/v1/auth/login",
+        json={"login": "test", "password": "StrongPassword123"},
+    )
+    assert login.status_code == 200, login.text
+    assert login.json()["user"]["role"] == "Admin"
+
+    duplicate = await client.post(
+        "/api/v1/auth/register",
+        headers=headers,
+        json={
+            "email": "duplicate@example.com",
+            "username": "test",
+            "displayName": "Duplicate",
+            "password": "DuplicatePassword123",
+            "role": "Viewer",
+        },
+    )
+    assert duplicate.status_code == 409
+    assert duplicate.json()["error"]["code"] == "username_exists"
 
 
 async def test_cookie_auth_requires_csrf_and_refresh_rotates(

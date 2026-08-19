@@ -80,6 +80,23 @@ export type FormSubmitter = (
   context?: FormSubmissionContext,
 ) => Promise<FormSubmissionResult | void>;
 
+export interface PageFeedQuery {
+  sourceType?: 'folder' | 'tag' | 'manual' | string;
+  source?: string;
+  sort?: 'newest' | 'oldest' | 'title' | string;
+  limit?: number;
+  contentType?: string;
+  sectionKey?: string;
+  items?: Array<Record<string, unknown>>;
+}
+
+export interface PageFeedResult {
+  items: Array<Record<string, unknown>>;
+  total?: number;
+}
+
+export type PageFeedResolver = (query?: PageFeedQuery) => Promise<PageFeedResult>;
+
 export interface LinkResolverContext {
   block?: ConstruktorBlock;
   purpose?: string;
@@ -126,6 +143,7 @@ export interface IntegrationAdapters {
   assetResolver: AssetResolver;
   formSubmitter: FormSubmitter;
   linkResolver: LinkResolver;
+  pageFeedResolver: PageFeedResolver;
   integrationSlots: IntegrationSlots;
 }
 
@@ -133,6 +151,7 @@ export interface CreateIntegrationAdaptersOptions {
   apiBaseUrl?: string;
   basePath?: string;
   fetchImpl?: typeof fetch;
+  pageFeedResolver?: PageFeedResolver | null;
 }
 
 export interface PublicRendererProps {
@@ -142,6 +161,7 @@ export interface PublicRendererProps {
   assetResolver?: AssetResolver;
   formSubmitter?: FormSubmitter;
   linkResolver?: LinkResolver;
+  pageFeedResolver?: PageFeedResolver;
   integrationSlots?: IntegrationSlots;
   className?: string;
   editor?: boolean;
@@ -170,6 +190,7 @@ export const defaultIntegrationSlots: Readonly<IntegrationSlots>;
 
 export function safeMediaUrl(value?: unknown): string;
 export function safeNavigationUrl(value?: unknown, fallback?: string): string;
+export function publicSiteUrl(value?: unknown): string;
 export function sanitizeHtml(value?: string): string;
 export const INTERACTIVE_BLOCK_TYPES: Set<string>;
 export function isInteractiveBlock(type: string): boolean;

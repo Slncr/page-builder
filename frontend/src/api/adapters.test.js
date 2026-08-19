@@ -58,7 +58,7 @@ describe('PageDocument adapters', () => {
       },
       assetsRefs: [assetId],
     });
-    expect(document.blocks.map((block) => block.type)).toEqual(['section', 'image', 'text']);
+    expect(document.blocks.map((block) => block.type)).toEqual(['section', 'image', 'hero']);
     expect(document.blocks[0].children[0]).toMatchObject({
       type: 'heading',
       version: '1.0',
@@ -182,6 +182,55 @@ describe('PageDocument adapters', () => {
         byId: { image: { id: 'image', type: 'image', props: { src: 'https://example.com/a.jpg' } } },
         rootOrder: ['image'],
         childrenByParent: { image: [] },
+      },
+    })).toThrow(DocumentAdapterError);
+  });
+
+  it('allows an editorial image to inherit the page cover', () => {
+    const document = normalizedToBackendDocument({
+      content: {
+        byId: {
+          image: {
+            id: 'image',
+            type: 'image',
+            props: { usePageCover: true, decorative: true },
+          },
+        },
+        rootOrder: ['image'],
+        childrenByParent: { image: [] },
+      },
+    });
+    expect(document.blocks[0]).toMatchObject({
+      type: 'image',
+      props: { usePageCover: true, decorative: true },
+    });
+    expect(document.blocks[0].props).not.toHaveProperty('assetId');
+  });
+
+  it('normalizes embed provider aliases when loading from backend', () => {
+    const normalized = backendDocumentToNormalized({
+      blocks: [{
+        id: 'embed',
+        type: 'embed',
+        props: { provider: 'googleMaps', url: 'https://www.google.com/maps/embed?pb=1' },
+        children: [],
+      }],
+    });
+    expect(normalized.content.byId.embed.props.provider).toBe('google_maps');
+  });
+
+  it('requires media-library assets for card images', () => {
+    expect(() => normalizedToBackendDocument({
+      content: {
+        byId: {
+          card: {
+            id: 'card',
+            type: 'card',
+            props: { title: 'Card', image: 'https://example.com/a.jpg' },
+          },
+        },
+        rootOrder: ['card'],
+        childrenByParent: { card: [] },
       },
     })).toThrow(DocumentAdapterError);
   });

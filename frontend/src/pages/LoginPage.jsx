@@ -4,10 +4,10 @@ import { isDemoMode } from '../api/client.js';
 import { useSession } from '../auth/SessionContext.jsx';
 
 export default function LoginPage() {
-  const { user, login } = useSession();
+  const { user, login: authenticate } = useSession();
   const location = useLocation();
   const navigate = useNavigate();
-  const [email, setEmail] = useState(isDemoMode ? 'admin@example.com' : '');
+  const [login, setLogin] = useState(isDemoMode ? 'admin' : '');
   const [password, setPassword] = useState(isDemoMode ? 'demo' : '');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -19,7 +19,7 @@ export default function LoginPage() {
     setError('');
     setSubmitting(true);
     try {
-      await login({ email, password });
+      await authenticate({ login, password });
       navigate(location.state?.from?.pathname || '/admin/builder', { replace: true });
     } catch (nextError) {
       setError(nextError.message || 'Не удалось войти.');
@@ -48,12 +48,14 @@ export default function LoginPage() {
             <p>Используйте учётную запись администратора.</p>
           </header>
           <label>
-            <span>Электронная почта</span>
+            <span>Логин или электронная почта</span>
             <input
-              type="email"
+              type="text"
               autoComplete="username"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              autoCapitalize="none"
+              spellCheck={false}
+              value={login}
+              onChange={(event) => setLogin(event.target.value)}
               required
               autoFocus
             />

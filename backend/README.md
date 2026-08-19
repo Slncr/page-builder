@@ -56,11 +56,13 @@ Interactive OpenAPI documentation is at `/api/v1/docs`.
 
 ## Security model
 
-Passwords use Argon2id. Login creates short-lived access JWTs and rotating
-refresh JWTs. Both are returned for Bearer clients and also set as HttpOnly
-cookies. Cookie-authenticated mutating requests require the matching
-double-submit value in the `X-CSRF-Token` header. Refresh identifiers are
-stored as SHA-256 digests, and reuse revokes the user's token family.
+Passwords use Argon2id. Accounts may have a unique lowercase username, and
+login accepts either that username or the account email. Login creates
+short-lived access JWTs and rotating refresh JWTs. Both are returned for Bearer
+clients and also set as HttpOnly cookies. Cookie-authenticated mutating requests
+require the matching double-submit value in the `X-CSRF-Token` header. Refresh
+identifiers are stored as SHA-256 digests, and reuse revokes the user's token
+family.
 
 Roles are ordered according to the product permission matrix:
 
@@ -134,10 +136,21 @@ pb-worker
 ```
 
 Both commands support `--once` for probes and one-shot jobs. `pb-worker`
-normalizes uploaded images, strips EXIF, persists 320/640/1024/1600/2048
-renditions in the source format plus WebP and AVIF when Pillow supports those
-encoders, and processes queued webhook deliveries. Set `PB_WORKER_ENABLED=true`
-only when intentionally running that loop inside the API process.
+converts uploaded images to WebP, strips EXIF, enforces a byte budget
+(`PB_IMAGE_MAX_BYTES`, default 512000 ≈ 500 KB) and max dimension
+(`PB_IMAGE_MAX_DIMENSION`, default 2048 px), then persists responsive
+320/640/1024/1600/2048 renditions as WebP. Use `pb-reoptimize-assets` to
+queue the same pipeline for images already stored in the library. Set
+`PB_WORKER_ENABLED=true` only when intentionally running that loop inside
+the API process.
+
+Built-in editorial templates live in `frontend/src/content/siteTemplates.js`.
+They ship ten visually distinct layouts: operational news, service launch,
+patient story, award, program, expert longform, checklist, pediatric guide,
+symptom triage and a minimal editorial column. Layouts use nested sections,
+asymmetric columns and the page cover selected in listing settings. Export to the backend catalog with
+`node frontend/scripts/export-site-templates.mjs`, then seed with
+`pb-seed-templates --replace`.
 The API default is `PB_SCHEDULER_ENABLED=false`; `pb-scheduler` is the intended
 dedicated scheduler service.
 

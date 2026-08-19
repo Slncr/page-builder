@@ -32,6 +32,8 @@ dependencies = [
 [project.scripts]
 pb-scheduler = "app.cli.scheduler:main"
 pb-worker = "app.cli.worker:main"
+pb-reoptimize-assets = "app.cli.reoptimize:main"
+pb-seed-templates = "app.cli.seed_templates:main"
 
 [project.optional-dependencies]
 dev = [
