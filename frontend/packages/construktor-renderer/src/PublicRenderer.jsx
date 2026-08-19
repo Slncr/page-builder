@@ -2,6 +2,7 @@ import React, { Component, useEffect } from 'react';
 import {
   defaultAssetResolver,
   defaultFormSubmitter,
+  defaultIntegrationAdapters,
   defaultIntegrationSlots,
   defaultLinkResolver,
 } from './integrations.js';
@@ -293,6 +294,7 @@ export function PublicRenderer({
   assetResolver = defaultAssetResolver,
   formSubmitter = defaultFormSubmitter,
   linkResolver = defaultLinkResolver,
+  pageFeedResolver = defaultIntegrationAdapters.pageFeedResolver,
   integrationSlots = defaultIntegrationSlots,
   className = '',
   editor = false,
@@ -307,6 +309,7 @@ export function PublicRenderer({
     assetResolver,
     formSubmitter,
     linkResolver,
+    pageFeedResolver,
     integrationSlots: integrationSlots || defaultIntegrationSlots,
   };
 

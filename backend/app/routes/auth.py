@@ -7,7 +7,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Body, Request, Response, status
-from sqlalchemy import func, select, update
+from sqlalchemy import func, or_, select, update
 
 from app.audit import add_audit, client_ip
 from app.dependencies import (
@@ -87,8 +87,15 @@ async def register(
         raise AppError(
             409, "email_exists", "Учётная запись с таким адресом электронной почты уже существует"
         )
+    if payload.username is not None:
+        existing_username = await session.scalar(
+            select(User.id).where(User.username == payload.username)
+        )
+        if existing_username is not None:
+            raise AppError(409, "username_exists", "Учётная запись с таким логином уже существует")
     user = User(
         email=email,
+        username=payload.username,
         display_name=payload.display_name.strip(),
         password_hash=hash_password(payload.password),
         role=payload.role.value if user_count else Role.ADMIN.value,
@@ -115,10 +122,10 @@ async def login(
     session: SessionDep,
     settings: SettingsDep,
 ) -> TokenResponse:
-    email = str(payload.email).strip().lower()
+    login = payload.login
     ip = client_ip(request) or "unknown"
     attempts = await request.app.state.cache.increment(
-        f"auth-rate:{hash_identifier(ip + ':' + email)}",
+        f"auth-rate:{hash_identifier(ip + ':' + login)}",
         300,
     )
     if attempts > 10:
@@ -128,7 +135,9 @@ async def login(
             "Слишком много попыток входа; повторите попытку позже",
             headers={"Retry-After": "300"},
         )
-    user = await session.scalar(select(User).where(User.email == email))
+    user = await session.scalar(
+        select(User).where(or_(User.email == login, User.username == login))
+    )
     encoded = user.password_hash if user is not None else DUMMY_PASSWORD_HASH
     valid, replacement = verify_password(payload.password, encoded)
     if user is None or not valid or not user.is_active:
@@ -139,10 +148,14 @@ async def login(
             action="auth.login_failed",
             resource_type="auth",
             resource_id=None,
-            details={"emailHash": hash_identifier(email)},
+            details={"loginHash": hash_identifier(login)},
         )
         await session.commit()
-        raise AppError(401, "invalid_credentials", "Неверный адрес электронной почты или пароль")
+        raise AppError(
+            401,
+            "invalid_credentials",
+            "Неверный логин, адрес электронной почты или пароль",
+        )
     if replacement:
         user.password_hash = replacement
     user.last_login_at = datetime.now(UTC)

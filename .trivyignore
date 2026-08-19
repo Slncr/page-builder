@@ -1,0 +1,2 @@
+# Official nginx image binds :80 as root; runtime hardening is handled separately.
+AVD-DS-0002

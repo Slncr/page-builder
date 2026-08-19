@@ -260,11 +260,18 @@ const demo = {
     async me() {
       return demoUser();
     },
-    async login({ email, password }) {
-      if (!email || !password) {
-        throw new ApiError('Укажите электронную почту и пароль.', 422);
+    async login({ login, email, password }) {
+      const identifier = login || email;
+      if (!identifier || !password) {
+        throw new ApiError('Укажите логин и пароль.', 422);
       }
-      const user = { id: 'demo-admin', name: 'Демо-администратор', email, role: 'Admin' };
+      const user = {
+        id: 'demo-admin',
+        name: 'Демо-администратор',
+        username: identifier.includes('@') ? null : identifier,
+        email: identifier.includes('@') ? identifier : 'admin@example.com',
+        role: 'Admin',
+      };
       sessionStorage.setItem(DEMO_SESSION_KEY, JSON.stringify(user));
       return user;
     },
@@ -309,18 +316,30 @@ const demo = {
       if (!page) throw new ApiError('Страница не найдена.', 404);
       return copy(page);
     },
-    async listPublic({ contentType = '', sectionKey = '', limit } = {}) {
+    async listPublic(query = {}) {
+      const {
+        contentType = '',
+        sectionKey = '',
+        section = '',
+        limit,
+        pageSize,
+      } = query;
+      const resolvedSection = section || sectionKey;
+      const resolvedLimit = pageSize ?? limit;
       const items = readDemoDb().pages
         .filter((page) => page.status === 'published')
         .filter((page) => !page.listingMeta?.hiddenFromLists)
         .filter((page) => !contentType || page.contentType === contentType)
-        .filter((page) => !sectionKey || page.sectionKey === sectionKey)
+        .filter((page) => !resolvedSection || page.sectionKey === resolvedSection)
         .sort((left, right) => (
           Number(left.listingMeta?.sortOrder || 0) - Number(right.listingMeta?.sortOrder || 0)
           || String(right.listingMeta?.publishedDisplayAt || right.publishedAt || '')
             .localeCompare(String(left.listingMeta?.publishedDisplayAt || left.publishedAt || ''))
         ));
-      return { items: copy(limit ? items.slice(0, Number(limit)) : items), total: items.length };
+      return {
+        items: copy(resolvedLimit ? items.slice(0, Number(resolvedLimit)) : items),
+        total: items.length,
+      };
     },
     async publicFeed(query) {
       return demo.pages.listPublic(query);
@@ -548,9 +567,23 @@ const demo = {
 
 const publicCache = new Map();
 
+export function normalizePublicFeedQuery(query = {}) {
+  const normalized = {};
+  if (query.site) normalized.site = query.site;
+  if (query.contentType) normalized.contentType = query.contentType;
+  const section = query.section ?? query.sectionKey;
+  if (section) normalized.section = section;
+  const pageSize = query.pageSize ?? query.limit;
+  if (pageSize != null && pageSize !== '') normalized.pageSize = pageSize;
+  if (query.page) normalized.page = query.page;
+  if (query.pathPrefix) normalized.pathPrefix = query.pathPrefix;
+  if (query.featured != null && query.featured !== '') normalized.featured = query.featured;
+  return normalized;
+}
+
 async function requestPublicFeed(query = {}) {
   const params = new URLSearchParams(
-    Object.entries(query).filter(([, value]) => value !== '' && value != null),
+    Object.entries(normalizePublicFeedQuery(query)).filter(([, value]) => value !== '' && value != null),
   );
   const suffix = params.toString();
   return adaptPublicFeed(await request(

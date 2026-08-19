@@ -68,7 +68,10 @@ async def test_created_content_and_api_messages_are_russian(
         json={"email": "admin@example.com", "password": "неверный-пароль"},
     )
     assert invalid_login.status_code == 401
-    assert invalid_login.json()["error"]["message"] == "Неверный адрес электронной почты или пароль"
+    assert (
+        invalid_login.json()["error"]["message"]
+        == "Неверный логин, адрес электронной почты или пароль"
+    )
 
     invalid_request = await client.post(
         "/api/v1/sites",

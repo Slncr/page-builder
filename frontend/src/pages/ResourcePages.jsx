@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, isDemoMode } from '../api/client.js';
-import { createBlock, getBlockDefinition } from '../registry/index.js';
+import { SITE_TEMPLATE_CATEGORIES, SITE_TEMPLATES } from '../content/siteTemplates.js';
+import { backendContentType, canonicalRoutePath } from '../content/pageTypes.js';
 import { SiteSelect, useActiveSite } from '../sites/useActiveSite.jsx';
 import { formatDateTime, formatStatus } from '../utils/display.js';
 import { slugify } from '../utils/slugify.js';
@@ -106,62 +107,89 @@ export function MediaPage() {
   );
 }
 
-const builtInTemplates = [
-  {
-    id: 'campaign',
-    name: 'Промо-лендинг',
-    description: 'Первый экран, преимущества, отзывы и заметный призыв к действию.',
-    types: ['hero', 'features', 'stats', 'testimonials', 'cta'],
-  },
-  {
-    id: 'article',
-    name: 'Статья',
-    description: 'Навигация, понятная иерархия заголовков, форматированный текст и подвал.',
-    types: ['navbar', 'heading', 'richText', 'quote', 'footer'],
-  },
-  {
-    id: 'contact',
-    name: 'Контактная страница',
-    description: 'Вступление и доступная форма обратной связи.',
-    types: ['heading', 'richText', 'form', 'footer'],
-  },
-];
+const builtInTemplates = SITE_TEMPLATES.map((template) => ({
+  ...template,
+  id: `builtin:${template.id}`,
+  isBuiltIn: true,
+}));
+
+function TemplatePreview({ template }) {
+  const layout = template.preview?.layout || 'custom';
+  const tone = template.preview?.tone || 'blue';
+  return (
+    <div
+      className={`pb-template-preview pb-template-preview--${tone}`}
+      data-preview-layout={layout}
+      aria-hidden="true"
+    >
+      <div className="pb-template-preview__masthead">
+        <i />
+        <b />
+        <span />
+      </div>
+      <div className="pb-template-preview__visual" />
+      <div className="pb-template-preview__copy">
+        <span /><span /><span /><span />
+      </div>
+      <div className="pb-template-preview__aside">
+        <i /><i /><i />
+      </div>
+      <div className="pb-template-preview__cards">
+        <i /><i /><i /><i />
+      </div>
+    </div>
+  );
+}
 
 export function TemplatesPage() {
   const navigate = useNavigate();
   const [creating, setCreating] = useState('');
+  const [category, setCategory] = useState('');
   const { sites, siteId, setSiteId } = useActiveSite();
   const { items, loading, error } = useResource('templates', { siteId });
-  const templates = (isDemoMode && !items.length ? builtInTemplates : items).map((template) => ({
+  const templates = useMemo(() => {
+    const apiTemplates = items.map((template) => ({
       ...template,
       description: template.document ? `Версия шаблона ${template.version}` : template.description,
-      types: template.types || (template.document?.blocks || []).map((block) => block.type),
+      types: (template.document?.blocks || []).map((block) => block.type),
+      category: template.category || 'custom',
     }));
+    const merged = [...builtInTemplates, ...apiTemplates];
+    return category ? merged.filter((template) => template.category === category) : merged;
+  }, [items, category]);
   const applyTemplate = async (template) => {
     setCreating(template.id);
     try {
-      const slug = `${slugify(template.slug || template.name || template.id, 'shablon')}-${Date.now().toString(36)}`;
+      const slug = `${slugify(template.slug || template.name || template.id, 'material')}-${Date.now().toString(36)}`;
+      const contentType = template.contentType || 'generic';
+      const routePath = canonicalRoutePath(contentType, slug);
       let page;
-      if (template.document && api.pages.createFromTemplate) {
+      if (template.document && !template.isBuiltIn && api.pages.createFromTemplate) {
         page = await api.pages.createFromTemplate({
           templateId: template.id,
           siteId,
-          title: template.name,
+          title: template.pageMeta?.title || template.name,
           slug,
-          routePath: `/${slug}`,
+          routePath,
+          contentType: backendContentType(contentType),
+          sectionKey: template.sectionKey || undefined,
+          listingMeta: template.listingMeta,
         });
       } else {
-        const blocks = template.types.map((type) => createBlock(type));
         page = await api.pages.create({
           siteId,
-          title: template.name,
+          title: template.pageMeta?.title || template.name,
           slug,
-          routePath: `/${slug}`,
-          content: {
-            byId: Object.fromEntries(blocks.map((block) => [block.id, block])),
-            rootOrder: blocks.map((block) => block.id),
-            childrenByParent: Object.fromEntries(blocks.map((block) => [block.id, []])),
+          routePath,
+          contentType: backendContentType(contentType),
+          sectionKey: template.sectionKey || '',
+          layout: template.layout,
+          listingMeta: template.listingMeta,
+          seo: {
+            title: template.pageMeta?.seoTitle || template.name,
+            description: template.pageMeta?.metaDescription || template.description,
           },
+          content: template.content,
         });
       }
       navigate(`/admin/builder/pages/${page.id}`);
@@ -171,17 +199,43 @@ export function TemplatesPage() {
   };
   return (
     <main className="pb-resource-page">
-      <Header kicker="ОТПРАВНЫЕ ТОЧКИ" title="Шаблоны" description="Начните с проверенной структуры и настройте её под себя." />
-      <div className="pb-list-toolbar"><SiteSelect sites={sites} siteId={siteId} setSiteId={setSiteId} /></div>
+      <Header
+        kicker="РЕДАКЦИЯ"
+        title="Шаблоны"
+        description="10 разных макетов новостей и статей: журнальная обложка, колонки, карточки, чек-листы и клинические памятки."
+      />
+      <div className="pb-list-toolbar">
+        <SiteSelect sites={sites} siteId={siteId} setSiteId={setSiteId} />
+        <div className="pb-template-filters" role="tablist" aria-label="Категории шаблонов">
+          <button
+            type="button"
+            className={category ? 'pb-text-button' : 'pb-secondary-button'}
+            onClick={() => setCategory('')}
+          >
+            Все ({builtInTemplates.length + items.length})
+          </button>
+          {SITE_TEMPLATE_CATEGORIES.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={category === item.id ? 'pb-secondary-button' : 'pb-text-button'}
+              onClick={() => setCategory(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </div>
       {error && <p className="pb-alert pb-alert--error">{error}</p>}
       {loading && <div className="pb-empty-state">Загрузка шаблонов…</div>}
-      {!loading && !templates.length && <div className="pb-empty-state"><strong>Для этого сайта нет шаблонов</strong></div>}
+      {!loading && !templates.length && <div className="pb-empty-state"><strong>Для этой категории нет шаблонов</strong></div>}
       <section className="pb-template-grid">
         {templates.map((template) => (
           <article className="pb-panel pb-template-card" key={template.id}>
-            <div className={`pb-template-preview pb-template-preview--${template.id}`} aria-hidden="true">
-              {template.types.map((type) => <span key={type}>{getBlockDefinition(type)?.label || type}</span>)}
-            </div>
+            <TemplatePreview template={template} />
+            <p className="pb-template-category">
+              {SITE_TEMPLATE_CATEGORIES.find((item) => item.id === template.category)?.label || 'Сохранённый'}
+            </p>
             <h2>{template.name}</h2><p>{template.description}</p>
             <button className="pb-secondary-button" onClick={() => applyTemplate(template)} disabled={Boolean(creating) || !siteId}>
               {creating === template.id ? 'Создание…' : 'Использовать шаблон'}

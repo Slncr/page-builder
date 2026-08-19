@@ -206,6 +206,7 @@ async def test_image_metadata_exif_removal_and_worker_renditions(
     assert uploaded.status_code == 201, uploaded.text
     asset = uploaded.json()
     assert asset["status"] == "processing"
+    assert asset["contentType"] == "image/webp"
     assert asset["width"] == 80
     replay = await client.post(
         "/api/v1/assets/upload",
@@ -221,6 +222,7 @@ async def test_image_metadata_exif_removal_and_worker_renditions(
     assert replay.json()["id"] == asset["id"]
     stored = await app.state.storage.get(asset["objectKey"])
     with Image.open(io.BytesIO(stored)) as normalized:
+        assert normalized.format == "WEBP"
         assert not normalized.getexif()
 
     await app.state.worker.run_once()
@@ -237,8 +239,8 @@ async def test_image_metadata_exif_removal_and_worker_renditions(
     assert renditions.status_code == 200
     items: list[dict[str, Any]] = renditions.json()
     assert {item["width"] for item in items} == {320}
-    assert "320w-jpeg" in {item["name"] for item in items}
-    public = await client.get(f"/api/v1/public/assets/{asset['id']}/renditions/320w-jpeg")
+    assert "320w-webp" in {item["name"] for item in items}
+    public = await client.get(f"/api/v1/public/assets/{asset['id']}/renditions/320w-webp")
     assert public.status_code == 200
     assert public.headers["cache-control"].endswith("immutable")
     replacement_buffer = io.BytesIO()

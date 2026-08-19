@@ -47,8 +47,18 @@ export function getPrepublishWarnings(page) {
     for (const message of validateBlock(block)) {
       warnings.push({ level: 'error', message: `${definition.label}: ${message}.`, blockId: block.id });
     }
-    if (block.type === 'image' && !isUuid(block.props?.assetId)) {
-      warnings.push({ level: 'error', message: 'Для изображения нужно выбрать файл из медиатеки.', blockId: block.id });
+    if (
+      block.type === 'image'
+      && !isUuid(block.props?.assetId)
+      && !(block.props?.usePageCover && isUuid(page.listingMeta?.coverAssetId))
+    ) {
+      warnings.push({
+        level: 'error',
+        message: block.props?.usePageCover
+          ? 'Для блока обложки выберите обложку в настройках страницы.'
+          : 'Для изображения нужно выбрать файл из медиатеки.',
+        blockId: block.id,
+      });
     }
     if (block.type === 'image' && !block.props?.decorative && !block.props?.alt?.trim()) {
       warnings.push({ level: 'warning', message: 'У изображения нет альтернативного текста.', blockId: block.id });
@@ -56,8 +66,53 @@ export function getPrepublishWarnings(page) {
     if (block.type === 'file' && !isUuid(block.props?.assetId)) {
       warnings.push({ level: 'error', message: 'Для файла нужно выбрать материал из медиатеки.', blockId: block.id });
     }
+    if (block.type === 'card' && block.props?.image && !isUuid(block.props.image)) {
+      warnings.push({
+        level: 'error',
+        message: 'Для изображения карточки нужно выбрать файл из медиатеки.',
+        blockId: block.id,
+      });
+    }
+    if (block.type === 'hero' && block.props?.backgroundImage && !isUuid(block.props.backgroundImage)) {
+      warnings.push({
+        level: 'error',
+        message: 'Для фона первого экрана нужно выбрать файл из медиатеки.',
+        blockId: block.id,
+      });
+    }
+    if (block.type === 'section' && block.props?.backgroundImage && !isUuid(block.props.backgroundImage)) {
+      warnings.push({
+        level: 'error',
+        message: 'Для фонового изображения секции нужно выбрать файл из медиатеки.',
+        blockId: block.id,
+      });
+    }
+    if (block.type === 'video') {
+      if (block.props?.autoplay && !block.props?.muted) {
+        warnings.push({
+          level: 'error',
+          message: 'Автовоспроизведение видео возможно только без звука.',
+          blockId: block.id,
+        });
+      }
+      if (block.props?.posterAssetId && !isUuid(block.props.posterAssetId)) {
+        warnings.push({
+          level: 'error',
+          message: 'Для обложки видео нужно выбрать файл из медиатеки.',
+          blockId: block.id,
+        });
+      }
+    }
     if (block.type === 'gallery') {
-      const missing = (block.props?.assets || block.props?.images || [])
+      const galleryAssets = block.props?.assets || block.props?.images || [];
+      if (!galleryAssets.length) {
+        warnings.push({
+          level: 'error',
+          message: 'Галерея должна содержать хотя бы одно изображение.',
+          blockId: block.id,
+        });
+      }
+      const missing = galleryAssets
         .filter((item) => !isUuid(typeof item === 'string' ? item : item.assetId)).length;
       if (missing) warnings.push({
         level: 'error',
@@ -75,7 +130,21 @@ export function getPrepublishWarnings(page) {
     if (['richText', 'text'].includes(block.type) && !textFromHtml(block.props?.html)) {
       warnings.push({ level: 'warning', message: 'Блок форматированного текста пуст.', blockId: block.id });
     }
+    if (block.type === 'pageList' && block.props?.sourceType !== 'manual' && !String(block.props?.source || '').trim()) {
+      warnings.push({
+        level: 'warning',
+        message: 'Укажите папку или тег для динамического списка страниц.',
+        blockId: block.id,
+      });
+    }
     if (block.type === 'form') {
+      if (block.props?.successAction === 'redirect' && !String(block.props?.redirectUrl || '').trim()) {
+        warnings.push({
+          level: 'error',
+          message: 'Укажите URL перенаправления после отправки формы.',
+          blockId: block.id,
+        });
+      }
       const names = (block.props?.fields || []).map((field) => field.name).filter(Boolean);
       if (!names.length) warnings.push({
         level: 'error',
@@ -87,6 +156,15 @@ export function getPrepublishWarnings(page) {
         message: 'Имена полей формы не должны повторяться.',
         blockId: block.id,
       });
+      for (const field of block.props?.fields || []) {
+        if (['select', 'radio'].includes(field.type) && !String(field.options || '').trim()) {
+          warnings.push({
+            level: 'warning',
+            message: `Поле «${field.label || field.name}»: добавьте варианты ответа.`,
+            blockId: block.id,
+          });
+        }
+      }
     }
   }
 

@@ -48,8 +48,11 @@ function BlockPreview({ block, selected }) {
   const childIds = useBuilderStore((state) => state.childrenByParent[block.id] || []);
   const title = useBuilderStore((state) => state.title);
   const routePath = useBuilderStore((state) => state.routePath);
+  const contentType = useBuilderStore((state) => state.contentType);
+  const sectionKey = useBuilderStore((state) => state.sectionKey);
+  const listingMeta = useBuilderStore((state) => state.listingMeta);
   const definition = getBlockDefinition(block.type);
-  const document = { title, routePath };
+  const document = { title, routePath, contentType, sectionKey, listingMeta };
 
   if (block.type === 'richText' || block.type === 'text') {
     return <InlineRichText block={block} selected={selected} />;
@@ -185,6 +188,18 @@ function DeviceFrame() {
     send();
   }, [send]);
 
+  // Frame page announces readiness after React/session mount; onLoad alone races that.
+  useEffect(() => {
+    const onMessage = (event) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.type !== 'pb:ready') return;
+      if (event.source && event.source !== frame.current?.contentWindow) return;
+      send();
+    };
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, [send]);
+
   return (
     <div className={`pb-device-frame pb-device-frame--${device}`}>
       <iframe
@@ -241,6 +256,7 @@ export default function EditorCanvas() {
           className={`pb-editor-page pb-editor-page--${device}`}
           data-construktor-renderer
           data-pb-root
+          data-pb-preview={device}
         >
           <SortableContext items={rootOrder} strategy={verticalListSortingStrategy}>
             {rootOrder.length

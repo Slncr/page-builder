@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react';
 import {
   linkProps,
   resolveAsset,
@@ -16,6 +17,10 @@ const cleanBackground = (value, type) => (
   && /^(linear|radial)-gradient\([#\w\s(),.%+-]+\)$/i.test(value || '')
     ? value
     : cleanColor(value, '#ffffff')
+);
+
+const classToken = (value, fallback = 'default') => (
+  /^[a-z0-9-]+$/i.test(value || '') ? value : fallback
 );
 
 function Action({
@@ -51,6 +56,7 @@ function Action({
 function Section({ block, children, adapters }) {
   const { props } = block;
   if (props.visibility === false) return null;
+  const styleVariant = classToken(props.styleVariant);
   const image = props.backgroundType === 'image'
     ? resolveAsset(props.backgroundImage, adapters.assetResolver, {
       block,
@@ -63,7 +69,8 @@ function Section({ block, children, adapters }) {
   return (
     <section
       id={props.anchorId || props.anchor || undefined}
-      className={`pb-section pb-width--${props.containerWidth || props.maxWidth || 'default'}${image ? ' pb-section--image' : ''}`}
+      className={`pb-section pb-section--${styleVariant} pb-width--${props.containerWidth || props.maxWidth || 'default'}${image ? ' pb-section--image' : ''}`}
+      data-pb-variant={styleVariant}
       style={{
         '--pb-section-bg': background,
         '--pb-section-fg': cleanColor(props.foreground, '#172033'),
@@ -87,9 +94,10 @@ function Container({ block, children }) {
 
 function Columns({ block, children }) {
   const columns = Number(block.props.layout || block.props.columns) || 2;
+  const ratio = classToken(block.props.ratio, 'equal');
   return (
     <div
-      className={`pb-columns pb-columns--${columns} pb-gap--${block.props.gap}${block.props.stackOnMobile !== false ? ' pb-stack--mobile' : ''}`}
+      className={`pb-columns pb-columns--${columns} pb-columns--ratio-${ratio} pb-gap--${block.props.gap}${block.props.stackOnMobile !== false ? ' pb-stack--mobile' : ''}`}
       style={{ alignItems: block.props.alignItems || undefined }}
     >
       {children}
@@ -131,21 +139,29 @@ function Heading({ block }) {
 }
 
 function RichText({ block }) {
+  const variant = classToken(block.props.variant, 'default');
   return (
     <div
-      className={`pb-richtext pb-align--${block.props.align}`}
+      className={`pb-richtext pb-richtext--${variant} pb-align--${block.props.align}`}
       dangerouslySetInnerHTML={{ __html: sanitizeHtml(block.props.html) }}
     />
   );
 }
 
-function ImageBlock({ block, adapters }) {
+function ImageBlock({ block, document, adapters }) {
+  const pageCoverAssetId = block.props.usePageCover
+    ? document?.listingMeta?.coverAssetId
+    : '';
   const source = safeMediaUrl(block.props.src)
-    || resolveAsset(block.props.assetId, adapters.assetResolver, {
+    || resolveAsset(block.props.assetId || pageCoverAssetId, adapters.assetResolver, {
       block,
-      purpose: 'image',
+      purpose: block.props.usePageCover ? 'page-cover' : 'image',
     });
-  if (!source) return <div className="pb-placeholder">Выберите изображение</div>;
+  if (!source) {
+    return block.props.usePageCover
+      ? <div className="pb-cover-placeholder">Добавьте обложку в настройках страницы</div>
+      : <div className="pb-placeholder">Выберите изображение</div>;
+  }
   const media = (
     <img
       src={source}
@@ -208,16 +224,18 @@ function Hero({ block, adapters }) {
 }
 
 function Features({ block }) {
+  const columns = Number(block.props.columns) || 3;
+  const iconStyle = block.props.iconStyle || 'number';
   return (
     <section className="pb-feature-section">
       {block.props.title && <h2>{block.props.title}</h2>}
-      <div className={`pb-feature-grid pb-feature-grid--${block.props.columns || 3}`}>
+      <div className={`pb-feature-grid pb-feature-grid--${columns}`}>
         {(block.props.items || []).map((item, index) => (
           <article className="pb-feature" key={`${item.title}-${index}`}>
             <span className="pb-feature__index" aria-hidden="true">
-              {block.props.iconStyle === 'custom'
+              {iconStyle === 'custom'
                 ? item.icon
-                : block.props.iconStyle === 'check'
+                : iconStyle === 'check'
                   ? '✓'
                   : String(index + 1).padStart(2, '0')}
             </span>
@@ -391,32 +409,35 @@ function FileDownload({ block, adapters }) {
   );
 }
 
-function allowlistedEmbed(value) {
+function allowlistedEmbed(value, provider) {
   const source = safeMediaUrl(value);
+  if (!source) return '';
   try {
     const host = new URL(source).hostname.toLowerCase();
-    return [
-      'youtube.com',
-      'www.youtube.com',
-      'www.youtube-nocookie.com',
-      'player.vimeo.com',
-      'vimeo.com',
-      'www.google.com',
-      'maps.google.com',
-      'yandex.com',
-      'yandex.ru',
-    ].some((allowed) => host === allowed || host.endsWith(`.${allowed}`)) ? source : '';
+    const youtube = ['youtube.com', 'www.youtube.com', 'www.youtube-nocookie.com', 'youtu.be'];
+    const vimeo = ['player.vimeo.com', 'vimeo.com'];
+    const googleMaps = ['www.google.com', 'maps.google.com'];
+    const yandexMaps = ['yandex.com', 'yandex.ru'];
+    const allowedByProvider = {
+      youtube,
+      vimeo,
+      google_maps: googleMaps,
+      yandex_maps: yandexMaps,
+    }[provider] || [...youtube, ...vimeo, ...googleMaps, ...yandexMaps];
+    return allowedByProvider.some((allowed) => host === allowed || host.endsWith(`.${allowed}`))
+      ? source
+      : '';
   } catch {
     return '';
   }
 }
 
 function Embed({ block }) {
-  const source = allowlistedEmbed(block.props.url || block.props.src);
+  const source = allowlistedEmbed(block.props.url || block.props.src, block.props.provider);
   if (!source) {
     return (
       <div className="pb-placeholder">
-        Добавьте разрешённый URL YouTube, Vimeo, Google Карт или Яндекс Карт
+        Добавьте URL, соответствующий выбранному источнику ({block.props.provider || 'любой'})
       </div>
     );
   }
@@ -487,21 +508,85 @@ function Breadcrumbs({ block, document, adapters }) {
   );
 }
 
-function PageList({ block, adapters }) {
-  const items = (block.props.items || []).slice(0, Number(block.props.limit) || 6);
+function PageList({ block, document, adapters }) {
+  const props = block.props;
+  const limit = Number(props.limit) || 6;
+  const manualItems = useMemo(
+    () => (props.items || []).slice(0, limit),
+    [props.items, limit],
+  );
+  const [items, setItems] = useState(props.sourceType === 'manual' ? manualItems : null);
+  const [error, setError] = useState('');
+  const pageContentType = document?.contentType || '';
+  const pageSectionKey = document?.sectionKey || '';
+
+  useEffect(() => {
+    if (props.sourceType === 'manual') {
+      setItems(manualItems);
+      return undefined;
+    }
+    let active = true;
+    adapters.pageFeedResolver?.({
+      sourceType: props.sourceType,
+      source: props.source,
+      sort: props.sort,
+      limit,
+      items: manualItems,
+      contentType: pageContentType,
+      sectionKey: pageSectionKey,
+    }).then((feed) => {
+      if (!active) return;
+      const nextItems = (feed?.items || []).slice(0, limit);
+      setItems(nextItems.length ? nextItems : manualItems);
+      setError('');
+    }).catch((nextError) => {
+      if (!active) return;
+      setItems(manualItems);
+      setError(nextError.message || 'Не удалось загрузить список страниц.');
+    });
+    return () => { active = false; };
+  }, [
+    adapters.pageFeedResolver,
+    limit,
+    manualItems,
+    pageContentType,
+    pageSectionKey,
+    props.sort,
+    props.source,
+    props.sourceType,
+  ]);
+
+  if (items === null) {
+    return <div className="pb-placeholder">Загрузка списка страниц…</div>;
+  }
+
   return (
-    <div className={`pb-page-list pb-page-list--${block.props.cardTemplate}`}>
-      {items.map((item, index) => (
-        <article key={`${item.title}-${index}`}>
-          <h3>
-            <a {...linkProps(item.href, adapters.linkResolver, { block, purpose: 'page-list' })}>
-              {item.title}
-            </a>
-          </h3>
-          {item.description && <p>{item.description}</p>}
-        </article>
-      ))}
-    </div>
+    <>
+      {error && <p className="pb-form__status pb-form__status--error" role="status">{error}</p>}
+      <div className={`pb-page-list pb-page-list--${props.cardTemplate || 'default'}`}>
+        {items.map((item, index) => {
+          const cover = item.coverAssetId
+            ? resolveAsset(item.coverAssetId, adapters.assetResolver, {
+              block,
+              purpose: 'page-list-cover',
+            })
+            : '';
+          return (
+            <article key={`${item.title}-${index}`}>
+              {cover && props.cardTemplate === 'image' && (
+                <img src={cover} alt="" loading="lazy" className="pb-page-list__cover" />
+              )}
+              <h3>
+                <a {...linkProps(item.href, adapters.linkResolver, { block, purpose: 'page-list' })}>
+                  {item.title}
+                </a>
+              </h3>
+              {item.description && <p>{item.description}</p>}
+            </article>
+          );
+        })}
+      </div>
+    </>
   );
 }
 
@@ -565,7 +650,7 @@ export function StaticBlock({ block, children, document, adapters }) {
     case 'heading': return <Heading block={block} />;
     case 'richText': return <RichText block={block} />;
     case 'text': return <RichText block={block} />;
-    case 'image': return <ImageBlock block={block} adapters={adapters} />;
+    case 'image': return <ImageBlock block={block} document={document} adapters={adapters} />;
     case 'button': return <Action {...block.props} adapters={adapters} block={block} />;
     case 'hero': return <Hero block={block} adapters={adapters} />;
     case 'features': return <Features block={block} />;
@@ -610,7 +695,7 @@ export function StaticBlock({ block, children, document, adapters }) {
     case 'breadcrumbs': return (
       <Breadcrumbs block={block} document={document} adapters={adapters} />
     );
-    case 'pageList': return <PageList block={block} adapters={adapters} />;
+    case 'pageList': return <PageList block={block} document={document} adapters={adapters} />;
     case 'navbar': return <Navbar block={block} adapters={adapters} />;
     case 'footer': return <Footer block={block} adapters={adapters} />;
     default: return (

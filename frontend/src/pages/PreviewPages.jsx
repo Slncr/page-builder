@@ -28,13 +28,23 @@ export function AdminPreviewPage() {
 export function DevicePreviewPage() {
   const [page, setPage] = useState(null);
   useEffect(() => {
+    let retry = 0;
     const receive = (event) => {
       if (event.origin !== window.location.origin || event.data?.type !== 'pb:render') return;
+      window.clearInterval(retry);
       setPage(event.data.page);
     };
+    const announceReady = () => {
+      window.parent.postMessage({ type: 'pb:ready' }, window.location.origin);
+    };
     window.addEventListener('message', receive);
-    window.parent.postMessage({ type: 'pb:ready' }, window.location.origin);
-    return () => window.removeEventListener('message', receive);
+    announceReady();
+    // Retry until the parent answers; covers late listener attachment after session load.
+    retry = window.setInterval(announceReady, 400);
+    return () => {
+      window.clearInterval(retry);
+      window.removeEventListener('message', receive);
+    };
   }, []);
   return page
     ? <ConstruktorRenderer document={page} {...rendererAdapters} />

@@ -20,6 +20,7 @@ from app.models import PageContentType, PageStatus, ReviewDecision, Role
 
 SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)*$")
 SECTION_KEY_PATTERN = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)*$")
+USERNAME_PATTERN = re.compile(r"^[a-z0-9](?:[a-z0-9._-]{1,62}[a-z0-9])$")
 
 
 def to_camel(value: str) -> str:
@@ -44,6 +45,18 @@ def validate_section_key(value: str | None) -> str | None:
             "знаки подчёркивания и дефисы"
         )
     return value
+
+
+def normalize_username(value: str | None) -> str | None:
+    if value is None:
+        return None
+    username = value.strip().lower()
+    if not USERNAME_PATTERN.fullmatch(username):
+        raise ValueError(
+            "логин должен содержать от 3 до 64 латинских букв, цифр, точек, "
+            "знаков подчёркивания или дефисов"
+        )
+    return username
 
 
 class ListingMeta(APIModel):
@@ -182,14 +195,32 @@ class PageDocument(APIModel):
 
 class RegisterRequest(APIModel):
     email: EmailStr
+    username: str | None = None
     display_name: str = Field(min_length=1, max_length=160)
     password: str = Field(min_length=12, max_length=256)
     role: Role = Role.VIEWER
 
+    @field_validator("username")
+    @classmethod
+    def valid_username(cls, value: str | None) -> str | None:
+        return normalize_username(value)
+
 
 class LoginRequest(APIModel):
-    email: EmailStr
+    login: str = Field(
+        min_length=1,
+        max_length=320,
+        validation_alias=AliasChoices("login", "email"),
+    )
     password: str = Field(min_length=1, max_length=256)
+
+    @field_validator("login")
+    @classmethod
+    def valid_login(cls, value: str) -> str:
+        login = value.strip().lower()
+        if not login:
+            raise ValueError("укажите логин или адрес электронной почты")
+        return login
 
 
 class RefreshRequest(APIModel):
@@ -199,6 +230,7 @@ class RefreshRequest(APIModel):
 class UserOut(APIModel):
     id: UUID
     email: EmailStr
+    username: str | None = None
     display_name: str
     role: Role
     is_active: bool
@@ -207,9 +239,15 @@ class UserOut(APIModel):
 
 
 class UserPatch(APIModel):
+    username: str | None = None
     display_name: str | None = Field(default=None, min_length=1, max_length=160)
     role: Role | None = None
     is_active: bool | None = None
+
+    @field_validator("username")
+    @classmethod
+    def valid_username(cls, value: str | None) -> str | None:
+        return normalize_username(value)
 
 
 class TokenResponse(APIModel):

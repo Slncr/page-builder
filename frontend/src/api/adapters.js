@@ -1,4 +1,5 @@
 import {
+  backendContentType,
   canonicalRoutePath,
   normalizeContentType,
   normalizeListingMeta,
@@ -21,7 +22,11 @@ const BACKEND_BLOCK_TYPES = new Set([
   'button',
   'cta',
   'card',
+  'hero',
   'featureList',
+  'stats',
+  'testimonials',
+  'pricing',
   'accordion',
   'tabs',
   'table',
@@ -33,6 +38,8 @@ const BACKEND_BLOCK_TYPES = new Set([
   'faq',
   'breadcrumbs',
   'pageList',
+  'navbar',
+  'footer',
 ]);
 
 const TYPE_ALIASES = {
@@ -41,10 +48,16 @@ const TYPE_ALIASES = {
 };
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const ASSET_KEYS = ['assetId', 'backgroundImage', 'image', 'ogImage', 'posterAssetId', 'thumbnailAssetId'];
+const ASSET_KEYS = ['assetId', 'backgroundImage', 'image', 'ogImage', 'posterAssetId', 'thumbnailAssetId', 'coverAssetId'];
 
 const clone = (value) => (value == null ? value : structuredClone(value));
 const isUuid = (value) => typeof value === 'string' && UUID_PATTERN.test(value);
+
+function requireOptionalAssetUuid(props, key, message, blockId) {
+  if (props[key] && !isUuid(props[key])) {
+    throw new DocumentAdapterError(message, blockId);
+  }
+}
 
 export function adaptPageMetadata(page = {}) {
   const contentType = normalizeContentType(page.contentType);
@@ -63,7 +76,7 @@ export function pageMetadataToBackend(page = {}) {
     title: page.title,
     slug: page.slug,
     routePath: canonicalRoutePath(page.contentType, page.slug, page.routePath),
-    contentType: normalizeContentType(page.contentType),
+    contentType: backendContentType(page.contentType),
     sectionKey: page.sectionKey || null,
     listingMeta: {
       ...listingMeta,
@@ -119,6 +132,12 @@ function propsFromBackend(type, input = {}) {
     props.tabs = clone(props.tabs || props.items || []);
     delete props.items;
   }
+  if (type === 'embed') {
+    props.provider = {
+      googleMaps: 'google_maps',
+      yandexMaps: 'yandex_maps',
+    }[props.provider] || props.provider;
+  }
   return props;
 }
 
@@ -143,19 +162,58 @@ function propsToBackend(type, input = {}, blockId) {
   for (const key of ASSET_KEYS) {
     if (key in props && !props[key]) delete props[key];
   }
-  if (type === 'image' && !isUuid(props.assetId)) {
+  if (type === 'image' && !props.usePageCover && !isUuid(props.assetId)) {
     throw new DocumentAdapterError('Для блока изображения нужен файл из медиатеки.', blockId);
   }
   if (type === 'file' && !isUuid(props.assetId)) {
     throw new DocumentAdapterError('Для блока файла нужен материал из медиатеки.', blockId);
   }
   if (type === 'gallery') {
-    props.assets = (props.assets || []).map((asset) => (
-      typeof asset === 'string' ? { assetId: asset } : clone(asset)
-    ));
-    if (!props.assets.length || props.assets.some((asset) => !isUuid(asset.assetId))) {
-      throw new DocumentAdapterError('Для изображений галереи нужны файлы из медиатеки.', blockId);
+    props.assets = (props.assets || [])
+      .map((asset) => (typeof asset === 'string' ? { assetId: asset } : clone(asset)))
+      .filter((asset) => isUuid(asset.assetId));
+    if (!props.assets.length) {
+      throw new DocumentAdapterError('Добавьте хотя бы одно изображение из медиатеки.', blockId);
     }
+    props.assets = props.assets.map(({ assetId, alt = '' }) => ({ assetId, alt }));
+  }
+  if (type === 'image') {
+    delete props.src;
+  }
+  if (type === 'file') {
+    delete props.url;
+  }
+  if (type === 'card') {
+    requireOptionalAssetUuid(
+      props,
+      'image',
+      'Для изображения карточки нужен файл из медиатеки.',
+      blockId,
+    );
+  }
+  if (type === 'hero') {
+    requireOptionalAssetUuid(
+      props,
+      'backgroundImage',
+      'Для фона первого экрана нужен файл из медиатеки.',
+      blockId,
+    );
+  }
+  if (type === 'section') {
+    requireOptionalAssetUuid(
+      props,
+      'backgroundImage',
+      'Для фонового изображения секции нужен файл из медиатеки.',
+      blockId,
+    );
+  }
+  if (type === 'video') {
+    requireOptionalAssetUuid(
+      props,
+      'posterAssetId',
+      'Для обложки видео нужен файл из медиатеки.',
+      blockId,
+    );
   }
   if (type === 'form' && !props.formId) delete props.formId;
 

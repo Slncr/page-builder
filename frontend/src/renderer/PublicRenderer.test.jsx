@@ -63,9 +63,10 @@ describe('public renderer', () => {
     const types = [
       'section', 'container', 'columns', 'spacer', 'divider',
       'heading', 'text', 'quote', 'image', 'gallery', 'video', 'file',
-      'button', 'cta', 'card', 'featureList', 'accordion', 'tabs',
+      'button', 'cta', 'card', 'hero', 'features', 'featureList',
+      'stats', 'testimonials', 'pricing', 'accordion', 'tabs',
       'table', 'list', 'form', 'embed', 'html', 'map', 'faq',
-      'breadcrumbs', 'pageList',
+      'breadcrumbs', 'pageList', 'navbar', 'footer',
     ];
     const { container } = render(<PublicRenderer document={pageWith(...types.map((type) => createBlock(type)))} />);
     await waitFor(() => expect(container.querySelector('.pb-block-loading')).toBeNull());
@@ -101,6 +102,19 @@ describe('public renderer', () => {
       .toHaveAttribute('src', '/media/asset-id');
     expect(screen.getByRole('link', { name: 'Resolved link' }))
       .toHaveAttribute('href', '/site/contact');
+  });
+
+  it('respects the configured video provider', () => {
+    const youtubeAsFile = createBlock('video', {
+      props: {
+        provider: 'file',
+        videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        title: 'Native video',
+      },
+    });
+    const { container } = render(<PublicRenderer document={pageWith(youtubeAsFile)} />);
+    expect(container.querySelector('video.pb-video')).toBeInTheDocument();
+    expect(container.querySelector('iframe.pb-video')).toBeNull();
   });
 
   it('renders integration slots and reports a missing required slot', () => {

@@ -101,14 +101,18 @@ async def upload_asset(
     extension = _validate_upload(filename, content_type, data)
     image_info = None
     if content_type.startswith("image/"):
+        settings = request.app.state.settings
         image_info = await asyncio.to_thread(
             normalize_uploaded_image,
             data,
-            request.app.state.settings.image_quality,
+            settings.image_quality,
+            settings.image_max_bytes,
+            settings.image_max_dimension,
         )
         data = image_info.data
         content_type = image_info.content_type
         extension = image_info.extension
+        filename = f"{Path(filename).stem}.webp"
     now = datetime.now(UTC)
     object_key = f"{site_id}/{now:%Y/%m}/{uuid4().hex}{extension}"
     checksum = hashlib.sha256(data).hexdigest()
@@ -394,14 +398,18 @@ async def replace_asset_content(
     extension = _validate_upload(filename, content_type, data)
     image_info = None
     if content_type.startswith("image/"):
+        settings = request.app.state.settings
         image_info = await asyncio.to_thread(
             normalize_uploaded_image,
             data,
-            request.app.state.settings.image_quality,
+            settings.image_quality,
+            settings.image_max_bytes,
+            settings.image_max_dimension,
         )
         data = image_info.data
         content_type = image_info.content_type
         extension = image_info.extension
+        filename = f"{Path(filename).stem}.webp"
     checksum = hashlib.sha256(data).hexdigest()
     fingerprint = request_fingerprint(
         {"assetId": asset.id, "checksum": checksum, "contentType": content_type}
