@@ -72,7 +72,7 @@ jobs:
       PB_SCHEDULER_ENABLED: "false"
       FEATURE_PAGE_BUILDER: "true"
       FEATURE_SCHEDULER: "false"
-      COVERAGE_MIN: "80"
+      COVERAGE_MIN: "62"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

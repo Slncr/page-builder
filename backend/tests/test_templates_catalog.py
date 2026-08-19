@@ -43,10 +43,25 @@ def test_site_templates_are_distinct_editorial_news_and_articles() -> None:
             if block.type == "container":
                 assert block.props.get("width") != "narrow"
             urls = [block.props.get(key) for key in ("url", "href", "link") if block.props.get(key)]
-            urls.extend(button.get("url") for button in block.props.get("buttons") or [] if button.get("url"))
-            urls.extend(item.get("href") for item in block.props.get("items") or [] if item.get("href"))
+            urls.extend(
+                button.get("url")
+                for button in block.props.get("buttons") or []
+                if button.get("url")
+            )
+            urls.extend(
+                item.get("href") for item in block.props.get("items") or [] if item.get("href")
+            )
             for url in urls:
                 assert "page-builder" not in url
-                assert url.startswith(("/doctors", "/about/news", "/about/articles", "/services/directions", "tel:", "#"))
+                assert url.startswith(
+                    (
+                        "/doctors",
+                        "/about/news",
+                        "/about/articles",
+                        "/services/directions",
+                        "tel:",
+                        "#",
+                    )
+                )
     assert len(signatures) >= 7
     assert len(visual_variants) >= 10

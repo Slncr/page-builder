@@ -201,9 +201,7 @@ async def list_pages(
     if section_key:
         filters.append(Page.section_key == section_key)
     if featured is not None:
-        filters.append(
-            func.coalesce(Page.listing_meta["featured"].as_boolean(), False) == featured
-        )
+        filters.append(func.coalesce(Page.listing_meta["featured"].as_boolean(), False) == featured)
     statement = select(Page).where(*filters)
     if locale:
         statement = statement.join(Route, Route.page_id == Page.id).where(Route.locale == locale)

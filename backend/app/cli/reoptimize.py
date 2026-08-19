@@ -65,9 +65,7 @@ def main() -> None:
         help="Count matching assets without enqueueing jobs",
     )
     args = parser.parse_args()
-    queued = asyncio.run(
-        queue_image_reprocessing(site_id=args.site_id, dry_run=args.dry_run)
-    )
+    queued = asyncio.run(queue_image_reprocessing(site_id=args.site_id, dry_run=args.dry_run))
     action = "would queue" if args.dry_run else "queued"
     print(f"{action} {queued} image asset(s) for reprocessing")
 

@@ -643,10 +643,7 @@ class BlockRegistry:
                     ValidationIssue(
                         path="blocks",
                         code="invalid_h1_count",
-                        message=(
-                            f"Для публикации страница {requirement}; "
-                            f"найдено: {h1_count}"
-                        ),
+                        message=(f"Для публикации страница {requirement}; найдено: {h1_count}"),
                     )
                 )
             if not document.page_meta.meta_description:

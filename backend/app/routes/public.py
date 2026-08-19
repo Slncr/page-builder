@@ -398,9 +398,7 @@ async def list_public_pages(
         await session.scalar(select(func.count()).select_from(statement.order_by(None).subquery()))
         or 0
     )
-    rows = (
-        await session.execute(statement.offset((page - 1) * page_size).limit(page_size))
-    ).all()
+    rows = (await session.execute(statement.offset((page - 1) * page_size).limit(page_size))).all()
     items = [
         PublicPageListItem(
             id=item.id,
@@ -425,14 +423,17 @@ async def list_public_pages(
         "page": page,
         "pageSize": page_size,
     }
-    etag = "feed-" + hashlib.sha256(
-        json.dumps(
-            representation,
-            sort_keys=True,
-            separators=(",", ":"),
-            ensure_ascii=False,
-        ).encode("utf-8")
-    ).hexdigest()
+    etag = (
+        "feed-"
+        + hashlib.sha256(
+            json.dumps(
+                representation,
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+            ).encode("utf-8")
+        ).hexdigest()
+    )
     payload = {**representation, "etag": etag}
     headers = _cache_headers(etag, max_age)
     if max_age > 0:

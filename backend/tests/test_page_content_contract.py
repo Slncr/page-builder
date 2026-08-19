@@ -471,10 +471,7 @@ async def test_schedule_job_and_rollback_invalidate_public_feed(
     )
     assert after_rollback.status_code == 200
     assert after_rollback.json()["total"] == 1
-    assert (
-        after_rollback.json()["items"][0]["etag"]
-        != changed_feed.json()["items"][0]["etag"]
-    )
+    assert after_rollback.json()["items"][0]["etag"] != changed_feed.json()["items"][0]["etag"]
 
 
 async def test_openapi_exposes_page_content_contract(client: httpx.AsyncClient) -> None:
@@ -492,15 +489,15 @@ async def test_openapi_exposes_page_content_contract(client: httpx.AsyncClient) 
         "pageSize",
     }
     assert "304" in operation["responses"]
-    assert operation["responses"]["200"]["content"]["application/json"]["schema"][
-        "$ref"
-    ].endswith("/PublicPageListOut")
-    assert schema["paths"]["/api/v1/public/pages/by-path"]["get"]["responses"]["200"][
-        "content"
-    ]["application/json"]["schema"]["$ref"].endswith("/PublicPageDetailOut")
-    assert schema["paths"]["/api/v1/public/resolve"]["get"]["responses"]["200"][
-        "content"
-    ]["application/json"]["schema"]["$ref"].endswith("/PublicResolveOut")
+    assert operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"].endswith(
+        "/PublicPageListOut"
+    )
+    assert schema["paths"]["/api/v1/public/pages/by-path"]["get"]["responses"]["200"]["content"][
+        "application/json"
+    ]["schema"]["$ref"].endswith("/PublicPageDetailOut")
+    assert schema["paths"]["/api/v1/public/resolve"]["get"]["responses"]["200"]["content"][
+        "application/json"
+    ]["schema"]["$ref"].endswith("/PublicResolveOut")
 
     components = schema["components"]["schemas"]
     assert components["PageContentType"]["enum"] == [
@@ -527,9 +524,7 @@ async def test_openapi_exposes_page_content_contract(client: httpx.AsyncClient) 
         "menuLabel",
     }
     for document_schema in ("PageDocument-Input", "PageDocument-Output"):
-        assert components[document_schema]["properties"]["layout"]["$ref"].endswith(
-            "/PageLayout"
-        )
+        assert components[document_schema]["properties"]["layout"]["$ref"].endswith("/PageLayout")
     page_layout = components["PageLayout"]
     assert page_layout["additionalProperties"] is False
     assert page_layout["properties"]["shell"] == {
@@ -554,9 +549,7 @@ async def test_openapi_exposes_page_content_contract(client: httpx.AsyncClient) 
     assert components["DraftUpdate"]["properties"]["document"]["$ref"].endswith(
         "/PageDocument-Input"
     )
-    assert components["DraftOut"]["properties"]["document"]["$ref"].endswith(
-        "/PageDocument-Output"
-    )
+    assert components["DraftOut"]["properties"]["document"]["$ref"].endswith("/PageDocument-Output")
     assert components["PublicPageDetailOut"]["properties"]["document"]["$ref"].endswith(
         "/PageDocument-Output"
     )
@@ -572,28 +565,20 @@ def test_0005_migration_round_trip(tmp_path: Path, monkeypatch: Any) -> None:
     command.upgrade(config, "head")
     with sqlite3.connect(database_path) as connection:
         revision = connection.execute("SELECT version_num FROM alembic_version").fetchone()
-        columns = {
-            row[1] for row in connection.execute("PRAGMA table_info('pages')").fetchall()
-        }
+        columns = {row[1] for row in connection.execute("PRAGMA table_info('pages')").fetchall()}
     assert revision == (ALEMBIC_HEAD,)
     assert {"content_type", "section_key", "listing_meta"} <= columns
 
     command.downgrade(config, "0004_russian_locale")
     with sqlite3.connect(database_path) as connection:
-        columns = {
-            row[1] for row in connection.execute("PRAGMA table_info('pages')").fetchall()
-        }
+        columns = {row[1] for row in connection.execute("PRAGMA table_info('pages')").fetchall()}
     assert not {"content_type", "section_key", "listing_meta"} & columns
 
     command.upgrade(config, "head")
     with sqlite3.connect(database_path) as connection:
         revision = connection.execute("SELECT version_num FROM alembic_version").fetchone()
-        columns = {
-            row[1] for row in connection.execute("PRAGMA table_info('pages')").fetchall()
-        }
-        indexes = {
-            row[1] for row in connection.execute("PRAGMA index_list('pages')").fetchall()
-        }
+        columns = {row[1] for row in connection.execute("PRAGMA table_info('pages')").fetchall()}
+        indexes = {row[1] for row in connection.execute("PRAGMA index_list('pages')").fetchall()}
     assert revision == (ALEMBIC_HEAD,)
     assert {"content_type", "section_key", "listing_meta"} <= columns
     assert {"ix_pages_content_type", "ix_pages_section_key"} <= indexes
