@@ -48,7 +48,7 @@ jobs:
         with:
           scan-type: fs
           scan-ref: .
-          scanners: vuln,secret,misconfig
+          scanners: vuln,secret,config
           severity: HIGH,CRITICAL
           ignore-unfixed: true
           format: table
@@ -58,9 +58,9 @@ jobs:
     name: Dependency change review
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/dependency-review-action@v4
+        continue-on-error: true
         with:
           fail-on-severity: high
